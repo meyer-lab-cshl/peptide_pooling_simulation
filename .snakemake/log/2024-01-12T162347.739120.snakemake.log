@@ -1,0 +1,3 @@
+TypeError in file /Users/hmeyer/peptide_pooling_simulation/Snakefile, line 22:
+'list' object cannot be interpreted as an integer
+  File "/Users/hmeyer/peptide_pooling_simulation/Snakefile", line 22, in <module>

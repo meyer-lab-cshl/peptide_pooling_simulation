@@ -1,0 +1,95 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+collect               1
+evaluate_data         3
+pooling_scheme        3
+sim_data              3
+total                11
+
+Select jobs to execute...
+
+[Fri Jan 12 16:24:50 2024]
+rule pooling_scheme:
+    output: results/pooling_N10_I5_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 5
+    reason: Missing output files: results/pooling_N10_I5_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=10, iters=5, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Fri Jan 12 16:24:50 2024]
+rule pooling_scheme:
+    output: results/pooling_N10_I6_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 8
+    reason: Missing output files: results/pooling_N10_I6_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=10, iters=6, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Fri Jan 12 16:24:50 2024]
+rule pooling_scheme:
+    output: results/pooling_N10_I4_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 2
+    reason: Missing output files: results/pooling_N10_I4_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=10, iters=4, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Fri Jan 12 16:25:04 2024]
+Finished job 2.
+1 of 11 steps (9%) done
+Select jobs to execute...
+
+[Fri Jan 12 16:25:04 2024]
+rule sim_data:
+    input: results/pooling_N10_I4_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N10_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv
+    jobid: 3
+    reason: Missing output files: results/simulation_N10_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv; Input files updated by another job: results/pooling_N10_I4_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=10, iters=4, len_lst=200, pep_length=17, overlap=5, ep_length=8, mu_off=10, sigma_off=1.0, mu_n=5, sigma_n=1.0, r=3
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Fri Jan 12 16:25:41 2024]
+Finished job 3.
+2 of 11 steps (18%) done
+Select jobs to execute...
+
+[Fri Jan 12 16:25:41 2024]
+rule evaluate_data:
+    input: results/pooling_N10_I4_len200_peptide17_overlap5_ep_length8.tsv, results/simulation_N10_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv
+    output: results/conclusion_N10_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv
+    jobid: 1
+    reason: Missing output files: results/conclusion_N10_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv; Input files updated by another job: results/simulation_N10_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/pooling_N10_I4_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=10, iters=4, len_lst=200, pep_length=17, overlap=5, ep_length=8, mu_off=10, sigma_off=1.0, mu_n=5, sigma_n=1.0, r=3
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Fri Jan 12 16:26:09 2024]
+Finished job 1.
+3 of 11 steps (27%) done
+Terminating processes on user request, this might take some time.
+[Fri Jan 12 16:30:11 2024]
+Error in rule pooling_scheme:
+    jobid: 8
+    output: results/pooling_N10_I6_len200_peptide17_overlap5_ep_length8.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N10_I6_len200_peptide17_overlap5_ep_length8.tsv 			-n_pools 10 			-iters 6 			-len_lst 200 			-overlap 5 			-ep_length 8 			-pep_length 17
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Fri Jan 12 16:30:11 2024]
+Error in rule pooling_scheme:
+    jobid: 5
+    output: results/pooling_N10_I5_len200_peptide17_overlap5_ep_length8.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N10_I5_len200_peptide17_overlap5_ep_length8.tsv 			-n_pools 10 			-iters 5 			-len_lst 200 			-overlap 5 			-ep_length 8 			-pep_length 17
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-01-12T162445.004457.snakemake.log

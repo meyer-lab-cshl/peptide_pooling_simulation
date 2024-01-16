@@ -1,2 +1,4 @@
+npools_iters_lenlst_correspondence.tsv
+peplength_eplength_overlap_correspondence.tsv
 results/*
 !results/.gitkeep

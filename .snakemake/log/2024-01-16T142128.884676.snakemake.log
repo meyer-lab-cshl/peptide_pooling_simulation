@@ -1,0 +1,55 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+collect               1
+evaluate_data         2
+pooling_scheme        2
+sim_data              2
+total                 8
+
+Select jobs to execute...
+
+[Tue Jan 16 14:21:34 2024]
+rule pooling_scheme:
+    output: results/pooling_N10_I5_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 5
+    reason: Missing output files: results/pooling_N10_I5_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=10, iters=5, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Tue Jan 16 14:21:34 2024]
+rule pooling_scheme:
+    output: results/pooling_N10_I6_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 8
+    reason: Missing output files: results/pooling_N10_I6_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=10, iters=6, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+Terminating processes on user request, this might take some time.
+[Tue Jan 16 14:22:15 2024]
+Error in rule pooling_scheme:
+    jobid: 8
+    output: results/pooling_N10_I6_len200_peptide17_overlap5_ep_length8.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N10_I6_len200_peptide17_overlap5_ep_length8.tsv 			-n_pools 10 			-iters 6 			-len_lst 200 			-overlap 5 			-ep_length 8 			-pep_length 17
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue Jan 16 14:22:15 2024]
+Error in rule pooling_scheme:
+    jobid: 5
+    output: results/pooling_N10_I5_len200_peptide17_overlap5_ep_length8.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N10_I5_len200_peptide17_overlap5_ep_length8.tsv 			-n_pools 10 			-iters 5 			-len_lst 200 			-overlap 5 			-ep_length 8 			-pep_length 17
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-01-16T142128.884676.snakemake.log

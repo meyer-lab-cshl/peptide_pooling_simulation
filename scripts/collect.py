@@ -11,7 +11,7 @@ except FileNotFoundError:
 	'sigma_off', 'mu_n', 'sigma_n', 'r', 'notification', 'cognate', 'predicted', 'possible']
 
 	results = pd.DataFrame(columns = cols)
-	results.to_csv('/Users/hmeyer/peptide_pooling/simulation_results/summary_results.tsv',
+	results.to_csv('results/summary_results.tsv',
 		sep = "\t", index = None)
 
 for item in ins:

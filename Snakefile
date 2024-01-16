@@ -2,7 +2,7 @@ import pandas as pd
 import copepodTCR as cpp
 from math import comb
 
-n_pools = [10]
+n_pools = [12]
 #iters = [4]
 len_lst = [200]
 overlap = [5]
@@ -19,10 +19,11 @@ for n1 in n_pools:
 	for l1 in len_lst:
 		it1 = cpp.find_possible_k_values(n1, l1)
 		for item in it1:
-			if l1 <= comb(l1, item)*0.8:
+			if l1 <= comb(n1, item)*0.8:
 				row = {'n_pools':n1, 'len_lst':l1, 'iters':item}
 				row = pd.DataFrame([row])
 				setup1 = pd.concat([setup1, row])
+setup1.to_csv('npools_iters_lenlst_correspondence.tsv', sep = '\t', index = None)
 
 setup2 = pd.DataFrame(columns = ['overlap', 'ep_length', 'pep_length'])
 for p1 in pep_length:
@@ -33,6 +34,7 @@ for p1 in pep_length:
                 	row = {'pep_length':p1, 'ep_length':ep1, 'overlap':ov1}
                 	row = pd.DataFrame([row])
                 	setup2 = pd.concat([setup2, row])
+setup2.to_csv('peplength_eplength_overlap_correspondence.tsv', sep = '\t', index = None)
 
 # Rule all
 rule all:

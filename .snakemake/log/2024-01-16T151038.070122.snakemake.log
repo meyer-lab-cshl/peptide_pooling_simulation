@@ -1,0 +1,37 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job        count
+-------  -------
+all            1
+collect        1
+total          2
+
+Select jobs to execute...
+
+[Tue Jan 16 15:10:43 2024]
+rule collect:
+    input: results/conclusion_N12_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/conclusion_N12_I5_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/conclusion_N12_I6_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/conclusion_N12_I7_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/conclusion_N12_I8_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv
+    output: results/summary_results.tsv
+    jobid: 16
+    reason: Code has changed since last execution
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Tue Jan 16 15:10:44 2024]
+Finished job 16.
+1 of 2 steps (50%) done
+Select jobs to execute...
+
+[Tue Jan 16 15:10:44 2024]
+localrule all:
+    input: results/conclusion_N12_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/conclusion_N12_I5_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/conclusion_N12_I6_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/conclusion_N12_I7_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/conclusion_N12_I8_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv, results/summary_results.tsv
+    jobid: 0
+    reason: Input files updated by another job: results/summary_results.tsv
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Tue Jan 16 15:10:44 2024]
+Finished job 0.
+2 of 2 steps (100%) done
+Complete log: .snakemake/log/2024-01-16T151038.070122.snakemake.log

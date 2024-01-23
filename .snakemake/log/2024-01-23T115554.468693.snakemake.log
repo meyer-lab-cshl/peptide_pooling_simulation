@@ -1,0 +1,93 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+collect               1
+evaluate_data         5
+pooling_scheme        5
+sim_data              5
+total                17
+
+Select jobs to execute...
+
+[Tue Jan 23 11:56:00 2024]
+rule pooling_scheme:
+    output: results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    jobid: 14
+    reason: Missing output files: results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    wildcards: n_pools=12, iters=8, len_lst=200, pep_length=17, overlap=5, ep_length=8, n_proteins=3
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Tue Jan 23 11:56:00 2024]
+rule pooling_scheme:
+    output: results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    jobid: 8
+    reason: Missing output files: results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    wildcards: n_pools=12, iters=6, len_lst=200, pep_length=17, overlap=5, ep_length=8, n_proteins=3
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Tue Jan 23 11:56:00 2024]
+rule pooling_scheme:
+    output: results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    jobid: 2
+    reason: Missing output files: results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    wildcards: n_pools=12, iters=4, len_lst=200, pep_length=17, overlap=5, ep_length=8, n_proteins=3
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Tue Jan 23 11:56:00 2024]
+rule pooling_scheme:
+    output: results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    jobid: 5
+    reason: Missing output files: results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    wildcards: n_pools=12, iters=5, len_lst=200, pep_length=17, overlap=5, ep_length=8, n_proteins=3
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+Terminating processes on user request, this might take some time.
+[Tue Jan 23 11:56:07 2024]
+Error in rule pooling_scheme:
+    jobid: 5
+    output: results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8_nproteins3.tsv 			-n_pools 12 			-iters 5 			-len_lst 200 			-overlap 5 			-ep_length 8 			-pep_length 17 			-n_proteins 3
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue Jan 23 11:56:07 2024]
+Error in rule pooling_scheme:
+    jobid: 14
+    output: results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8_nproteins3.tsv 			-n_pools 12 			-iters 8 			-len_lst 200 			-overlap 5 			-ep_length 8 			-pep_length 17 			-n_proteins 3
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue Jan 23 11:56:07 2024]
+Error in rule pooling_scheme:
+    jobid: 8
+    output: results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8_nproteins3.tsv 			-n_pools 12 			-iters 6 			-len_lst 200 			-overlap 5 			-ep_length 8 			-pep_length 17 			-n_proteins 3
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue Jan 23 11:56:07 2024]
+Error in rule pooling_scheme:
+    jobid: 2
+    output: results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8_nproteins3.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8_nproteins3.tsv 			-n_pools 12 			-iters 4 			-len_lst 200 			-overlap 5 			-ep_length 8 			-pep_length 17 			-n_proteins 3
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-01-23T115554.468693.snakemake.log

@@ -10,6 +10,7 @@ parser.add_argument('-len_lst', type=int)
 parser.add_argument('-overlap', type=int)
 parser.add_argument('-ep_length', type=int)
 parser.add_argument('-pep_length', type=int)
+parser.add_argument('-n_proteins', type=int)
 parser.add_argument('-output', type=str)
 args = parser.parse_args()
 
@@ -22,13 +23,17 @@ pep_length = int(args.pep_length)
 output_path = str(args.output)
 
 ### Peptides
-length = overlap*len_lst + (100-overlap*len_lst%100)
-sequence = cpp.random_amino_acid_sequence(length)
 lst_all = []
-for i in range(0, len(sequence), overlap):
-    ps = sequence[i:i+pep_length]
-    if len(ps) == pep_length:
-        lst_all.append(ps)
+
+for n in range(args.n_proteins):
+    lst_pr = []
+    length = overlap*len_lst + (100-overlap*len_lst%100)//args.n_proteins
+    sequence = cpp.random_amino_acid_sequence(length)
+    for i in range(0, len(sequence), overlap):
+        ps = sequence[i:i+pep_length]
+        if len(ps) == pep_length:
+            lst_all.append(ps)
+    lst_all = lst_all + lst_pr[:len_lst//3 + 10]
 lst = lst_all[:len_lst]
 
 ### CPP

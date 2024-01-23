@@ -1,0 +1,153 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 4
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+collect               1
+evaluate_data         5
+pooling_scheme        5
+sim_data              5
+total                17
+
+Select jobs to execute...
+
+[Tue Jan 23 11:37:03 2024]
+rule pooling_scheme:
+    output: results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 14
+    reason: Missing output files: results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=12, iters=8, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Tue Jan 23 11:37:03 2024]
+rule pooling_scheme:
+    output: results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 8
+    reason: Missing output files: results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=12, iters=6, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Tue Jan 23 11:37:03 2024]
+rule pooling_scheme:
+    output: results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 2
+    reason: Missing output files: results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=12, iters=4, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Tue Jan 23 11:37:03 2024]
+rule pooling_scheme:
+    output: results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8.tsv
+    jobid: 5
+    reason: Missing output files: results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=12, iters=5, len_lst=200, pep_length=17, overlap=5, ep_length=8
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Tue Jan 23 11:37:13 2024]
+Finished job 2.
+1 of 17 steps (6%) done
+Select jobs to execute...
+
+[Tue Jan 23 11:37:13 2024]
+rule sim_data:
+    input: results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N12_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv
+    jobid: 3
+    reason: Missing output files: results/simulation_N12_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv; Input files updated by another job: results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=12, iters=4, len_lst=200, pep_length=17, overlap=5, ep_length=8, mu_off=10, sigma_off=1.0, mu_n=5, sigma_n=1.0, r=3, sigma_p_r=0.1, sigma_n_r=1, low_offset=0.6, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Tue Jan 23 11:37:13 2024]
+Finished job 8.
+2 of 17 steps (12%) done
+[Tue Jan 23 11:37:13 2024]
+Finished job 5.
+3 of 17 steps (18%) done
+Select jobs to execute...
+
+[Tue Jan 23 11:37:13 2024]
+rule sim_data:
+    input: results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N12_I5_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv
+    jobid: 6
+    reason: Missing output files: results/simulation_N12_I5_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv; Input files updated by another job: results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=12, iters=5, len_lst=200, pep_length=17, overlap=5, ep_length=8, mu_off=10, sigma_off=1.0, mu_n=5, sigma_n=1.0, r=3, sigma_p_r=0.1, sigma_n_r=1, low_offset=0.6, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+
+[Tue Jan 23 11:37:13 2024]
+rule sim_data:
+    input: results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N12_I6_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv
+    jobid: 9
+    reason: Missing output files: results/simulation_N12_I6_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv; Input files updated by another job: results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=12, iters=6, len_lst=200, pep_length=17, overlap=5, ep_length=8, mu_off=10, sigma_off=1.0, mu_n=5, sigma_n=1.0, r=3, sigma_p_r=0.1, sigma_n_r=1, low_offset=0.6, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+Select jobs to execute...
+[Tue Jan 23 11:37:13 2024]
+Finished job 14.
+4 of 17 steps (24%) done
+
+[Tue Jan 23 11:37:13 2024]
+rule sim_data:
+    input: results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N12_I8_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv
+    jobid: 15
+    reason: Missing output files: results/simulation_N12_I8_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv; Input files updated by another job: results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8.tsv
+    wildcards: n_pools=12, iters=8, len_lst=200, pep_length=17, overlap=5, ep_length=8, mu_off=10, sigma_off=1.0, mu_n=5, sigma_n=1.0, r=3, sigma_p_r=0.1, sigma_n_r=1, low_offset=0.6, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Tue Jan 23 11:37:21 2024]
+Error in rule sim_data:
+    jobid: 6
+    input: results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N12_I5_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv
+    shell:
+        
+		python scripts/sim_data.py 			-check_results results/pooling_N12_I5_len200_peptide17_overlap5_ep_length8.tsv 			-output results/simulation_N12_I5_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv 			-mu_off 10 			-sigma_off 1.0 			-mu_n 5 			-sigma_n 1.0 			-r 3 			-n_pools 12 			-sigma_p_r 0.1 			-sigma_n_r 1 			-low_offset 0.6 			-error 1
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue Jan 23 11:37:21 2024]
+Error in rule sim_data:
+    jobid: 15
+    input: results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N12_I8_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv
+    shell:
+        
+		python scripts/sim_data.py 			-check_results results/pooling_N12_I8_len200_peptide17_overlap5_ep_length8.tsv 			-output results/simulation_N12_I8_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv 			-mu_off 10 			-sigma_off 1.0 			-mu_n 5 			-sigma_n 1.0 			-r 3 			-n_pools 12 			-sigma_p_r 0.1 			-sigma_n_r 1 			-low_offset 0.6 			-error 1
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Tue Jan 23 11:37:21 2024]
+[Tue Jan 23 11:37:21 2024]
+Error in rule sim_data:
+    jobid: 3
+    input: results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N12_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv
+    shell:
+        
+		python scripts/sim_data.py 			-check_results results/pooling_N12_I4_len200_peptide17_overlap5_ep_length8.tsv 			-output results/simulation_N12_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv 			-mu_off 10 			-sigma_off 1.0 			-mu_n 5 			-sigma_n 1.0 			-r 3 			-n_pools 12 			-sigma_p_r 0.1 			-sigma_n_r 1 			-low_offset 0.6 			-error 1
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Error in rule sim_data:
+    jobid: 9
+    input: results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8.tsv
+    output: results/simulation_N12_I6_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv
+    shell:
+        
+		python scripts/sim_data.py 			-check_results results/pooling_N12_I6_len200_peptide17_overlap5_ep_length8.tsv 			-output results/simulation_N12_I6_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3_sigmapr0.1_sigmanr1_lowoffset0.6_error1.tsv 			-mu_off 10 			-sigma_off 1.0 			-mu_n 5 			-sigma_n 1.0 			-r 3 			-n_pools 12 			-sigma_p_r 0.1 			-sigma_n_r 1 			-low_offset 0.6 			-error 1
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-01-23T113641.708176.snakemake.log

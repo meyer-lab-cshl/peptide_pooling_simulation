@@ -1,29 +1,39 @@
 import pandas as pd
+import numpy as np
 import copepodTCR as cpp
 from math import comb
 
-n_pools = [12]
+n_pools = list(range(10, 36, 1))
 #iters = [4]
-len_lst = [200]
-overlap = [5]
-ep_length = [8]
-pep_length = [17]
-mu_off = [10]
-sigma_off = [1.0]
-mu_n = [5]
-sigma_n = [1.0]
-r = [3]
+len_lst = list(range(100, 2100, 100))
+overlap = list(range(4, 16, 1))
+ep_length = list(range(8, 16, 1))
+pep_length = list(range(10, 21, 1))
+n_proteins = list(range(1, 1100, 100))
+mu_off = list(range(0, 45, 5))
+sigma_off = list(np.arange(0.1, 21, 0.5))
+sigma_p_r = list(np.arange(0.1, 11, 0.5))
+sigma_n_r = list(np.arange(0.1, 11, 0.5))
+low_offset = list(np.arange(0.2, 0.9, 0.1))
+mu_n = list(range(0, 45, 5))
+sigma_n = list(np.arange(0.1, 11, 0.5))
+r = list(range(2, 6, 1))
+error = list(range(0, 35, 1))
 
-setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters'])
-for n1 in n_pools:
-	for l1 in len_lst:
-		it1 = cpp.find_possible_k_values(n1, l1)
-		for item in it1:
-			if l1 <= comb(n1, item)*0.8:
-				row = {'n_pools':n1, 'len_lst':l1, 'iters':item}
-				row = pd.DataFrame([row])
-				setup1 = pd.concat([setup1, row])
-setup1.to_csv('npools_iters_lenlst_correspondence.tsv', sep = '\t', index = None)
+setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters', 'n_proteins', 'error'])
+for er in error:
+	for np1 in n_proteins:
+		for n1 in n_pools:
+			for l1 in len_lst:
+				it1 = cpp.find_possible_k_values(n1, l1)
+				for item in it1:
+					if l1 <= comb(n1, item)*0.8 and np1 <= l1:
+						if er < item:
+							row = {'n_pools':n1, 'len_lst':l1, 'iters':item,
+							'n_proteins':np, 'error':er}
+							row = pd.DataFrame([row])
+							setup1 = pd.concat([setup1, row])
+setup1.to_csv('npools_iters_lenlst_nproteins_correspondence.tsv', sep = '\t', index = None)
 
 setup2 = pd.DataFrame(columns = ['overlap', 'ep_length', 'pep_length'])
 for p1 in pep_length:
@@ -39,22 +49,23 @@ setup2.to_csv('peplength_eplength_overlap_correspondence.tsv', sep = '\t', index
 # Rule all
 rule all:
 	input:
-		expand("results/conclusion_N{setup1.n_pools}_I{setup1.iters}_len{setup1.len_lst}_peptide{setup2.pep_length}_overlap{setup2.overlap}_ep_length{setup2.ep_length}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}.tsv",
-			setup1 = setup1.itertuples(), setup2 = setup2.itertuples(), pep_length=pep_length, overlap=overlap, ep_length=ep_length, mu_off=mu_off, sigma_off=sigma_off, mu_n=mu_n, sigma_n=sigma_n, r=r),
+		expand("results/conclusion_N{setup1.n_pools}_I{setup1.iters}_len{setup1.len_lst}_peptide{setup2.pep_length}_overlap{setup2.overlap}_ep_length{setup2.ep_length}_nproteins{setup1.n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{setup1.error}.tsv",
+			setup1 = setup1.itertuples(), setup2 = setup2.itertuples(), mu_off=mu_off, sigma_off=sigma_off, mu_n=mu_n, sigma_n=sigma_n, r=r, sigma_p_r=sigma_p_r, sigma_n_r=sigma_n_r, low_offset=low_offset, error=error),
 		expand("results/summary_results.tsv")
 
 
 # Pooling
 rule pooling_scheme:
 	output:
-		path = "results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}.tsv"
+		path = "results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}.tsv"
 	params:
 		n_pools="{n_pools}",
 		iters="{iters}",
 		len_lst="{len_lst}",
 		overlap="{overlap}",
 		ep_length="{ep_length}",
-		pep_length="{pep_length}"
+		pep_length="{pep_length}",
+		n_proteins = "{n_proteins}"
 	shell:
 		"""
 		python scripts/pooling.py \
@@ -64,15 +75,16 @@ rule pooling_scheme:
 			-len_lst {wildcards.len_lst} \
 			-overlap {wildcards.overlap} \
 			-ep_length {wildcards.ep_length} \
-			-pep_length {wildcards.pep_length}
+			-pep_length {wildcards.pep_length} \
+			-n_proteins {wildcards.n_proteins}
 		"""
 
 # Simulation
 rule sim_data:
 	input:
-		"results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}.tsv"
+		"results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}.tsv"
 	output:
-		"results/simulation_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}.tsv"
+		"results/simulation_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
 	params:
 		mu_off="{mu_off}",
 		sigma_off="{sigma_off}",
@@ -80,8 +92,10 @@ rule sim_data:
 		sigma_n="{sigma_n}",
 		r="{r}",
 		n_pools="{n_pools}",
-		iters="{iters}",
-		ep_length="{ep_length}"
+		sigma_p_r="{sigma_p_r}",
+		sigma_n_r="{sigma_n_r}",
+		low_offset="{low_offset}",
+		error="{error}"
 	shell:
 		"""
 		python scripts/sim_data.py \
@@ -93,17 +107,19 @@ rule sim_data:
 			-sigma_n {wildcards.sigma_n} \
 			-r {wildcards.r} \
 			-n_pools {wildcards.n_pools} \
-			-iters {wildcards.iters} \
-			-ep_length {wildcards.ep_length} \
+			-sigma_p_r {wildcards.sigma_p_r} \
+			-sigma_n_r {wildcards.sigma_n_r} \
+			-low_offset {wildcards.low_offset} \
+			-error {wildcards.error}
 		"""
 
 # Results interpetation
 rule evaluate_data:
 	input:
-		scheme="results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}.tsv",
-		data="results/simulation_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}.tsv"
+		scheme="results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}.tsv",
+		data="results/simulation_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
 	output:
-		"results/conclusion_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}.tsv"
+		"results/conclusion_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
 	params:
 		n_pools="{n_pools}",
 		iters="{iters}",
@@ -111,11 +127,16 @@ rule evaluate_data:
 		pep_length="{pep_length}",
 		overlap="{overlap}",
 		ep_length="{ep_length}",
+		n_proteins="{n_proteins}",
 		mu_off="{mu_off}",
 		sigma_off="{sigma_off}",
 		mu_n="{mu_n}",
 		sigma_n="{sigma_n}",
-		r="{r}"
+		r="{r}",
+		sigma_p_r="{sigma_p_r}",
+		sigma_n_r="{sigma_n_r}",
+		low_offset="{low_offset}",
+		error="{error}"
 	shell:
 		"""
 		python scripts/evaluate_data.py \
@@ -128,17 +149,22 @@ rule evaluate_data:
 			-pep_length {wildcards.pep_length} \
 			-overlap {wildcards.overlap} \
 			-ep_length {wildcards.ep_length} \
+			-n_proteins {wildcards.n_proteins} \
 			-mu_off {wildcards.mu_off} \
 			-sigma_off {wildcards.sigma_off} \
 			-mu_n {wildcards.mu_n} \
 			-sigma_n {wildcards.sigma_n} \
-			-r {wildcards.r}
+			-r {wildcards.r} \
+			-sigma_p_r {wildcards.sigma_p_r} \
+			-sigma_n_r {wildcards.sigma_n_r} \
+			-low_offset {wildcards.low_offset} \
+			-error {wildcards.error}
 			"""
 
 rule collect:
 	input:
-		expand("results/conclusion_N{setup1.n_pools}_I{setup1.iters}_len{setup1.len_lst}_peptide{setup2.pep_length}_overlap{setup2.overlap}_ep_length{setup2.ep_length}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}.tsv",
-			setup1 = setup1.itertuples(), setup2 = setup2.itertuples(), pep_length=pep_length, overlap=overlap, ep_length=ep_length, mu_off=mu_off, sigma_off=sigma_off, mu_n=mu_n, sigma_n=sigma_n, r=r)
+		expand("results/conclusion_N{setup1.n_pools}_I{setup1.iters}_len{setup1.len_lst}_peptide{setup2.pep_length}_overlap{setup2.overlap}_ep_length{setup2.ep_length}_nproteins{setup1.n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{setup1.error}.tsv",
+			setup1 = setup1.itertuples(), setup2 = setup2.itertuples(), mu_off=mu_off, sigma_off=sigma_off, mu_n=mu_n, sigma_n=sigma_n, r=r, sigma_p_r=sigma_p_r, sigma_n_r=sigma_n_r, low_offset=low_offset)
 	output:
 		"results/summary_results.tsv"
 	script:

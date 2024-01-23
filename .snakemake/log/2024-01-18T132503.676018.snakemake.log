@@ -1,0 +1,9 @@
+Building DAG of jobs...
+MissingInputException in rule all in file /Users/hmeyer/peptide_pooling_simulation/Snakefile, line 43:
+Missing input files for rule all:
+    affected files:
+        results/conclusion_N12_I7_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv
+        results/conclusion_N12_I8_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv
+        results/conclusion_N12_I6_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv
+        results/conclusion_N12_I5_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv
+        results/conclusion_N12_I4_len200_peptide17_overlap5_ep_length8_muoff10_sigmaoff1.0_mun5_sigman1.0_r3.tsv

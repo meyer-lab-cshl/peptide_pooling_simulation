@@ -7,8 +7,10 @@ output = snakemake.output[0]
 try:
 	results = pd.read_csv(output, sep = "\t")
 except FileNotFoundError:
-	cols = ['n_pools', 'iters', 'len_lst', 'pep_length', 'shift', 'ep_length', 'mu_off',
-	'sigma_off', 'mu_n', 'sigma_n', 'r', 'notification', 'cognate', 'predicted', 'possible']
+	cols = ['n_pools', 'iters', 'len_lst', 'pep_length', 'shift', 'ep_length', 'n_proteins', 'mu_off',
+	'sigma_off', 'mu_n', 'sigma_n', 'r', 'error', 'sigma_p_r',
+	'sigma_n_r', 'low_offset', 'notification', 'cognate', 'predicted', 'possible',
+	'conclusion_cognate', 'conclusion_possible']
 
 	results = pd.DataFrame(columns = cols)
 	results.to_csv('results/summary_results.tsv',

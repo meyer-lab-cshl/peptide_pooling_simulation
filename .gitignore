@@ -1,4 +1,4 @@
-npools_iters_lenlst_correspondence.tsv
 peplength_eplength_overlap_correspondence.tsv
+npools_iters_lenlst_nproteins_correspondence.tsv
 results/*
 !results/.gitkeep

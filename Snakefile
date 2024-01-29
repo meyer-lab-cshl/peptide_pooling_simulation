@@ -3,22 +3,36 @@ import numpy as np
 import copepodTCR as cpp
 from math import comb
 
-n_pools = list(range(10, 36, 1))
-#iters = [4]
-len_lst = list(range(100, 2100, 100))
-overlap = list(range(4, 16, 1))
-ep_length = list(range(8, 16, 1))
-pep_length = list(range(10, 21, 1))
-n_proteins = list(range(1, 1100, 100))
-mu_off = list(range(0, 45, 5))
-sigma_off = list(np.arange(0.1, 21, 0.5))
-sigma_p_r = list(np.arange(0.1, 11, 0.5))
-sigma_n_r = list(np.arange(0.1, 11, 0.5))
-low_offset = list(np.arange(0.2, 0.9, 0.1))
-mu_n = list(range(0, 45, 5))
-sigma_n = list(np.arange(0.1, 11, 0.5))
-r = list(range(2, 6, 1))
-error = list(range(0, 35, 1))
+n_pools = list(range(10, 26, 2))
+#n_pools = [15]
+len_lst = list(range(100, 1200, 200))
+#len_lst = [200]
+overlap = list(range(4, 10, 2))
+#overlap = [5]
+ep_length = list(range(8, 15, 2))
+#ep_length = [8]
+pep_length = list(range(10, 21, 2))
+#pep_length = [17]
+n_proteins = list(range(1, 50, 20))
+#n_proteins = [1]
+mu_off = list(range(0, 45, 10))
+#mu_off = [20]
+sigma_off = list(np.arange(0, 5, 1))
+#sigma_off = [5]
+sigma_p_r = list(np.arange(0, 5, 2))
+#sigma_p_r = [1]
+sigma_n_r = list(np.arange(0, 5, 2))
+#sigma_n_r = [1]
+low_offset = list(np.arange(0.2, 0.9, 0.2))
+#low_offset = 0.6
+mu_n = list(range(0, 45, 10))
+#mu_n = [0]
+sigma_n = list(np.arange(0, 5, 1))
+#sigma_n = [5]
+r = [1, 2, 3]
+#r = [3]
+error = [0, 1, 2]
+#error = [0]
 
 setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters', 'n_proteins', 'error'])
 for er in error:
@@ -28,12 +42,13 @@ for er in error:
 				it1 = cpp.find_possible_k_values(n1, l1)
 				for item in it1:
 					if l1 <= comb(n1, item)*0.8 and np1 <= l1:
-						if er < item:
+						if er < item and item < 6:
 							row = {'n_pools':n1, 'len_lst':l1, 'iters':item,
-							'n_proteins':np, 'error':er}
+							'n_proteins':np1, 'error':er}
 							row = pd.DataFrame([row])
 							setup1 = pd.concat([setup1, row])
 setup1.to_csv('npools_iters_lenlst_nproteins_correspondence.tsv', sep = '\t', index = None)
+print('setup1 done')
 
 setup2 = pd.DataFrame(columns = ['overlap', 'ep_length', 'pep_length'])
 for p1 in pep_length:
@@ -45,6 +60,10 @@ for p1 in pep_length:
                 	row = pd.DataFrame([row])
                 	setup2 = pd.concat([setup2, row])
 setup2.to_csv('peplength_eplength_overlap_correspondence.tsv', sep = '\t', index = None)
+print('setup2 done')
+
+#setup1 = pd.read_csv('npools_iters_lenlst_nproteins_correspondence.tsv', sep = '\t')
+#setup2 = pd.read_csv('peplength_eplength_overlap_correspondence.tsv', sep = '\t')
 
 # Rule all
 rule all:

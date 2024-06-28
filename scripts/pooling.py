@@ -1,4 +1,5 @@
 import copepodTCR as cpp
+import codepub as cdp
 import random
 import argparse
 
@@ -37,7 +38,7 @@ for n in range(args.n_proteins):
 lst = lst_all[:len_lst]
 
 ### CPP
-b, lines = cpp.address_rearrangement_AU(n_pools=n_pools, iters=iters, len_lst=len_lst)
+b, lines = cdp.rcau(n_pools=n_pools, iters=iters, len_lst=len_lst)
 pools, peptide_address = cpp.pooling(lst=lst, addresses=lines, n_pools=n_pools)
 check_results = cpp.run_experiment(lst=lst, peptide_address=peptide_address,
     ep_length=ep_length, pools=pools, iters=iters, n_pools=n_pools, regime='without dropouts')

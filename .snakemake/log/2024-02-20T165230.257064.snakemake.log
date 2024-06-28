@@ -1,0 +1,43 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+collect               1
+evaluate_data         2
+pooling_scheme        1
+sim_data              2
+total                 7
+
+Select jobs to execute...
+
+[Tue Feb 20 16:52:36 2024]
+rule sim_data:
+    input: results/pooling_N10_I4_len100_peptide12_overlap4_ep_length8_nproteins1.tsv
+    output: results/simulation_N10_I4_len100_peptide12_overlap4_ep_length8_nproteins1_muoff20_sigmaoff1_mun0_sigman1_r2_sigmapr3_sigmanr3_lowoffset0.6_error0.tsv
+    jobid: 3
+    reason: Missing output files: results/simulation_N10_I4_len100_peptide12_overlap4_ep_length8_nproteins1_muoff20_sigmaoff1_mun0_sigman1_r2_sigmapr3_sigmanr3_lowoffset0.6_error0.tsv
+    wildcards: n_pools=10, iters=4, len_lst=100, pep_length=12, overlap=4, ep_length=8, n_proteins=1, mu_off=20, sigma_off=1, mu_n=0, sigma_n=1, r=2, sigma_p_r=3, sigma_n_r=3, low_offset=0.6, error=0
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Tue Feb 20 16:53:18 2024]
+Error in rule sim_data:
+    jobid: 3
+    input: results/pooling_N10_I4_len100_peptide12_overlap4_ep_length8_nproteins1.tsv
+    output: results/simulation_N10_I4_len100_peptide12_overlap4_ep_length8_nproteins1_muoff20_sigmaoff1_mun0_sigman1_r2_sigmapr3_sigmanr3_lowoffset0.6_error0.tsv
+    shell:
+        
+		export PYTENSOR_FLAGS="compiledir=$HOME/.pytensor/compiledir_10_4_100_12_4_8_1_20_1_0_1_2_3_3_0.6_0"
+		python scripts/sim_data.py 			-check_results results/pooling_N10_I4_len100_peptide12_overlap4_ep_length8_nproteins1.tsv 			-output results/simulation_N10_I4_len100_peptide12_overlap4_ep_length8_nproteins1_muoff20_sigmaoff1_mun0_sigman1_r2_sigmapr3_sigmanr3_lowoffset0.6_error0.tsv 			-mu_off 20 			-sigma_off 1 			-mu_n 0 			-sigma_n 1 			-r 2 			-n_pools 10 			-sigma_p_r 3 			-sigma_n_r 3 			-low_offset 0.6 			-error 0
+		rm -rf "compiledir=$HOME/.pytensor/compiledir_$10_4_100_12_4_8_1_20_1_0_1_2_3_3_0.6_0"
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Removing output files of failed job sim_data since they might be corrupted:
+results/simulation_N10_I4_len100_peptide12_overlap4_ep_length8_nproteins1_muoff20_sigmaoff1_mun0_sigman1_r2_sigmapr3_sigmanr3_lowoffset0.6_error0.tsv
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2024-02-20T165230.257064.snakemake.log

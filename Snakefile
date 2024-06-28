@@ -1,38 +1,24 @@
 import pandas as pd
 import numpy as np
 import copepodTCR as cpp
+import codepub as cdp
 from math import comb
 
-#n_pools = list(range(10, 26, 2))
-n_pools = [10, 15]
-#len_lst = list(range(100, 1200, 200))
-len_lst = [100, 300, 600]
-#overlap = list(range(4, 10, 2))
-overlap = [4, 6]
-#ep_length = list(range(8, 15, 2))
-ep_length = [8, 10]
-#pep_length = list(range(12, 21, 2))
-pep_length = [12, 14]
-#n_proteins = [1, 10, 100]
-n_proteins = [1, 10]
-#mu_off = list(range(0, 45, 10))
-mu_off = [0, 20]
-#sigma_off = list(np.arange(0, 5, 1))
-sigma_off = [1, 3]
-#sigma_p_r = list(np.arange(0, 5, 2))
-sigma_p_r = [1, 3]
-#sigma_n_r = list(np.arange(0, 5, 2))
-sigma_n_r = [1, 3]
-#low_offset = list(np.arange(0.2, 0.9, 0.2))
-low_offset = [0.2, 0.6]
-#mu_n = list(range(0, 45, 10))
-mu_n = [0, 10]
-#sigma_n = list(np.arange(0, 5, 1))
-sigma_n = [1, 3]
-r = [1, 2]
-#r = [3]
+n_pools = [10]
+len_lst = [100]
+overlap = [4]
+ep_length = [8]
+pep_length = [14]
+n_proteins = [1]
+mu_off = [0]
+sigma_off = [1]
+sigma_p_r = [1]
+sigma_n_r = [1]
+low_offset = [0.2]
+mu_n = [0]
+sigma_n = [1]
+r = [1]
 error = [0, 1]
-#error = [0]
 
 setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters', 'n_proteins', 'error'])
 for er in error:
@@ -68,8 +54,8 @@ setup2.to_csv('peplength_eplength_overlap_correspondence.tsv', sep = '\t', index
 # Rule all
 rule all:
 	input:
-		#expand("results/conclusion_N{setup1.n_pools}_I{setup1.iters}_len{setup1.len_lst}_peptide{setup2.pep_length}_overlap{setup2.overlap}_ep_length{setup2.ep_length}_nproteins{setup1.n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{setup1.error}.tsv",
-		#	setup1 = setup1.itertuples(), setup2 = setup2.itertuples(), mu_off=mu_off, sigma_off=sigma_off, mu_n=mu_n, sigma_n=sigma_n, r=r, sigma_p_r=sigma_p_r, sigma_n_r=sigma_n_r, low_offset=low_offset, error=error),
+		expand("results/conclusion_N{setup1.n_pools}_I{setup1.iters}_len{setup1.len_lst}_peptide{setup2.pep_length}_overlap{setup2.overlap}_ep_length{setup2.ep_length}_nproteins{setup1.n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{setup1.error}.tsv",
+			setup1 = setup1.itertuples(), setup2 = setup2.itertuples(), mu_off=mu_off, sigma_off=sigma_off, mu_n=mu_n, sigma_n=sigma_n, r=r, sigma_p_r=sigma_p_r, sigma_n_r=sigma_n_r, low_offset=low_offset, error=error),
 		expand("results/summary_results.tsv")
 
 
@@ -77,14 +63,6 @@ rule all:
 rule pooling_scheme:
 	output:
 		path = "results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}.tsv"
-	params:
-		n_pools="{n_pools}",
-		iters="{iters}",
-		len_lst="{len_lst}",
-		overlap="{overlap}",
-		ep_length="{ep_length}",
-		pep_length="{pep_length}",
-		n_proteins = "{n_proteins}"
 	shell:
 		"""
 		python scripts/pooling.py \
@@ -103,23 +81,17 @@ rule sim_data:
 	input:
 		"results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}.tsv"
 	output:
-		"results/simulation_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
+		output_data = "results/simulation_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv",
+		output_params = "results/simparams_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
 	params:
-		mu_off="{mu_off}",
-		sigma_off="{sigma_off}",
-		mu_n="{mu_n}",
-		sigma_n="{sigma_n}",
-		r="{r}",
-		n_pools="{n_pools}",
-		sigma_p_r="{sigma_p_r}",
-		sigma_n_r="{sigma_n_r}",
-		low_offset="{low_offset}",
-		error="{error}"
+		ident_sim = lambda wildcards : "_".join(wildcards)
 	shell:
 		"""
+		export PYTENSOR_FLAGS="compiledir=$HOME/.pytensor/compiledir_sim_{params.ident_sim}"
 		python scripts/sim_data.py \
 			-check_results {input} \
-			-output {output} \
+			-output {output.output_data} \
+			-output_params {output.output_params} \
 			-mu_off {wildcards.mu_off} \
 			-sigma_off {wildcards.sigma_off} \
 			-mu_n {wildcards.mu_n} \
@@ -130,37 +102,26 @@ rule sim_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
+		rm -rf "$HOME/.pytensor/compiledir_sim_{params.ident_sim}"
 		"""
 
 # Results interpetation
 rule evaluate_data:
 	input:
 		scheme="results/pooling_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}.tsv",
-		data="results/simulation_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
+		data="results/simulation_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv",
+		sim_params="results/simparams_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
 	output:
 		"results/conclusion_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_nproteins{n_proteins}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
 	params:
-		n_pools="{n_pools}",
-		iters="{iters}",
-		len_lst="{len_lst}",
-		pep_length="{pep_length}",
-		overlap="{overlap}",
-		ep_length="{ep_length}",
-		n_proteins="{n_proteins}",
-		mu_off="{mu_off}",
-		sigma_off="{sigma_off}",
-		mu_n="{mu_n}",
-		sigma_n="{sigma_n}",
-		r="{r}",
-		sigma_p_r="{sigma_p_r}",
-		sigma_n_r="{sigma_n_r}",
-		low_offset="{low_offset}",
-		error="{error}"
+		ident_ev = lambda wildcards : "_".join(wildcards)
 	shell:
 		"""
+		export PYTENSOR_FLAGS="compiledir=$HOME/.pytensor/compiledir_ev_{params.ident_ev}"
 		python scripts/evaluate_data.py \
 			-scheme {input.scheme} \
 			-data {input.data} \
+			-sim_params {input.sim_params} \
 			-output {output} \
 			-n_pools {wildcards.n_pools} \
 			-iters {wildcards.iters} \
@@ -178,7 +139,8 @@ rule evaluate_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-			"""
+		rm -rf "$HOME/.pytensor/compiledir_ev_{params.ident_ev}"
+		"""
 
 rule collect:
 	input:

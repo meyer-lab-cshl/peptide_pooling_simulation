@@ -1,4 +1,5 @@
 import copepodTCR as cpp
+import numpy as np
 import pandas as pd
 import random
 
@@ -32,12 +33,13 @@ data = str(args.data)
 output = str(args.output)
 
 cells = pd.read_csv(data, sep = "\t")
-sim_params = pd.read_csv(sim_params, sep = "\t")
+sim_params = pd.read_csv(args.sim_params, sep = "\t")
+n_control = sim_params['n_control'].iloc[0]
 check_results = pd.read_csv(scheme, sep = "\t")
 
 inds = list(cells['Pool'])
 obs = list(cells['Percentage'])
-fig, probs, parameters = cpp.activation_model(obs, args.n_pools, inds, cores = 1)
+fig, probs, parameters = cpp.activation_model(obs, args.n_pools, inds, n_control, cores = 1)
 peptide_probs = cpp.peptide_probabilities(check_results, probs)
 notification, lst1, lst2 = cpp.results_analysis(peptide_probs, probs, check_results)
 cognate = list(check_results['Peptide'][check_results['Cognate'] == True])
@@ -76,6 +78,7 @@ results_row['conclusion_cognate'] = set(cognate) == set(lst1)
 results_row['conclusion_possible'] = all(elem in cognate for elem in lst2)
 results_row['negative_model'] = parameters[1]
 results_row['positive_model'] = parameters[0]
+results_row['neg_control'] = sim_params['n_control'].iloc[0]
 results_row['positive_sim'] = sim_params['positive_sim'].iloc[0]
 results_row['negative_sim'] = sim_params['negative_sim'].iloc[0]
 

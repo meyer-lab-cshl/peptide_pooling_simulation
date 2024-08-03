@@ -1,0 +1,151 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job              count
+-------------  -------
+all                  1
+collect              1
+evaluate_data        4
+sim_data             4
+total               10
+
+Select jobs to execute...
+
+[Sat Aug  3 11:57:57 2024]
+rule sim_data:
+    input: results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv
+    output: results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    jobid: 6
+    reason: Missing output files: results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    wildcards: n_pools=10, iters=5, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=30, sigma_off=1, mu_n=0, sigma_n=1, r=1, sigma_p_r=1, sigma_n_r=1, low_offset=0.2, error=0
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:01:38 2024]
+Finished job 6.
+1 of 10 steps (10%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:01:38 2024]
+rule evaluate_data:
+    input: results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv, results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    output: results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    jobid: 4
+    reason: Missing output files: results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv; Input files updated by another job: results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    wildcards: n_pools=10, iters=5, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=30, sigma_off=1, mu_n=0, sigma_n=1, r=1, sigma_p_r=1, sigma_n_r=1, low_offset=0.2, error=0
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:05:02 2024]
+Finished job 4.
+2 of 10 steps (20%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:05:02 2024]
+rule sim_data:
+    input: results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv
+    output: results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    jobid: 10
+    reason: Missing output files: results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    wildcards: n_pools=10, iters=5, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=30, sigma_off=1, mu_n=0, sigma_n=1, r=1, sigma_p_r=1, sigma_n_r=1, low_offset=0.2, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:08:40 2024]
+Finished job 10.
+3 of 10 steps (30%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:08:40 2024]
+rule evaluate_data:
+    input: results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv, results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    output: results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    jobid: 9
+    reason: Missing output files: results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv; Input files updated by another job: results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    wildcards: n_pools=10, iters=5, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=30, sigma_off=1, mu_n=0, sigma_n=1, r=1, sigma_p_r=1, sigma_n_r=1, low_offset=0.2, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:12:08 2024]
+Finished job 9.
+4 of 10 steps (40%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:12:08 2024]
+rule sim_data:
+    input: results/pooling_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1.tsv
+    output: results/simulation_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/simparams_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    jobid: 8
+    reason: Missing output files: results/simparams_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/simulation_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    wildcards: n_pools=10, iters=4, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=30, sigma_off=1, mu_n=0, sigma_n=1, r=1, sigma_p_r=1, sigma_n_r=1, low_offset=0.2, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:15:47 2024]
+Finished job 8.
+5 of 10 steps (50%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:15:47 2024]
+rule evaluate_data:
+    input: results/pooling_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1.tsv, results/simulation_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/simparams_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    output: results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    jobid: 7
+    reason: Missing output files: results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv; Input files updated by another job: results/simparams_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/simulation_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    wildcards: n_pools=10, iters=4, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=30, sigma_off=1, mu_n=0, sigma_n=1, r=1, sigma_p_r=1, sigma_n_r=1, low_offset=0.2, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:19:02 2024]
+Finished job 7.
+6 of 10 steps (60%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:19:02 2024]
+rule sim_data:
+    input: results/pooling_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1.tsv
+    output: results/simulation_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/simparams_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    jobid: 3
+    reason: Missing output files: results/simparams_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/simulation_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    wildcards: n_pools=10, iters=4, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=30, sigma_off=1, mu_n=0, sigma_n=1, r=1, sigma_p_r=1, sigma_n_r=1, low_offset=0.2, error=0
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:22:41 2024]
+Finished job 3.
+7 of 10 steps (70%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:22:41 2024]
+rule evaluate_data:
+    input: results/pooling_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1.tsv, results/simulation_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/simparams_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    output: results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    jobid: 1
+    reason: Missing output files: results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv; Input files updated by another job: results/simparams_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/simulation_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv
+    wildcards: n_pools=10, iters=4, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=30, sigma_off=1, mu_n=0, sigma_n=1, r=1, sigma_p_r=1, sigma_n_r=1, low_offset=0.2, error=0
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:26:09 2024]
+Finished job 1.
+8 of 10 steps (80%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:26:09 2024]
+rule collect:
+    input: results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    output: results/summary_results.tsv
+    jobid: 11
+    reason: Missing output files: results/summary_results.tsv; Input files updated by another job: results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:26:11 2024]
+Finished job 11.
+9 of 10 steps (90%) done
+Select jobs to execute...
+
+[Sat Aug  3 12:26:11 2024]
+localrule all:
+    input: results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/summary_results.tsv
+    jobid: 0
+    reason: Input files updated by another job: results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error0.tsv, results/conclusion_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv, results/summary_results.tsv, results/conclusion_N10_I4_len100_peptide14_overlap4_ep_length8_nproteins1_muoff30_sigmaoff1_mun0_sigman1_r1_sigmapr1_sigmanr1_lowoffset0.2_error1.tsv
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Sat Aug  3 12:26:11 2024]
+Finished job 0.
+10 of 10 steps (100%) done
+Complete log: .snakemake/log/2024-08-03T115749.798273.snakemake.log

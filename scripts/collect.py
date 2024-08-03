@@ -8,7 +8,7 @@ try:
 	results = pd.read_csv(output, sep = "\t")
 except FileNotFoundError:
 	cols = ['n_pools', 'iters', 'len_lst', 'pep_length', 'shift', 'ep_length', 'n_proteins', 'mu_off',
-	'sigma_off', 'mu_n', 'sigma_n', 'r', 'error', 'sigma_p_r',
+	'sigma_off', 'mu_n', 'sigma_n', 'r', 'error', '# act', 'sigma_p_r',
 	'sigma_n_r', 'low_offset', 'notification', 'cognate', 'predicted', 'possible',
 	'conclusion_cognate', 'conclusion_possible',
 	'negative_model', 'positive_model', 'neg_control', 'pools <= neg_control',

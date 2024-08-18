@@ -8,7 +8,7 @@ import arviz as az
 
 import argparse
 
-def activation_model(obs, n_pools, inds, neg_control = None, cores=1):
+def activation_model(obs, n_pools, inds, neg_control = None, neg_share = None, cores=1):
 
     """
     Takes a list with observed data (obs), number of pools (n_pools), and indices for the observed data if there were mutiple replicas.
@@ -16,24 +16,20 @@ def activation_model(obs, n_pools, inds, neg_control = None, cores=1):
     """
     
     coords = dict(pool=range(n_pools), component=("positive", "negative"))
-
-    if neg_control is not None:
-        neg_control = np.sum(obs <= neg_control)/len(obs)
-        neg_control = 0.5 + 0.2*neg_control
-    else:
-        neg_control = 0.5
-
+    if neg_share is None:
+        neg_share = 0.5
+    neg_control = neg_control/np.max(obs)
     obs = obs/np.max(obs)
-    
 
     with pm.Model(coords=coords) as alternative_model:
         # Define the offset
-        offset = pm.Normal("offset", mu=0.6, sigma=0.1)
+        offset = pm.TruncatedNormal("offset", mu=0.6, sigma=0.1, lower=0, upper=1)
+        neg_c_dist = pm.TruncatedNormal('neg_c_dist', mu = neg_control, sigma = 0.1, lower = 0, upper = 1)
 
         # Negative component remains the same
         source_negative = pm.TruncatedNormal(
             "negative",
-            mu=0,
+            mu=neg_c_dist,
             sigma=0.01,
             lower=0,
             upper=1,
@@ -47,7 +43,7 @@ def activation_model(obs, n_pools, inds, neg_control = None, cores=1):
 
         # Each pool is assigned a 0/1
         # Probability of assigning depends on number of pools with activation signal higher than negative control
-        component = pm.Bernoulli("assign", neg_control, dims="pool")
+        component = pm.Bernoulli("assign", neg_share, dims="pool")
 
         # Each pool has a normally distributed response whose mu comes from either the
         # postive or negative source distribution
@@ -117,7 +113,13 @@ check_results = pd.read_csv(scheme, sep = "\t")
 
 inds = list(cells['Pool'])
 obs = list(cells['Percentage'])
-fig, probs, neg_ratio, parameters = activation_model(obs, args.n_pools, inds, n_control, cores = 1)
+
+all_lst = list(set(check_results['Peptide']))
+c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
+normal = max(c, key=c.get)
+neg_share = 1 - (args.iters + normal -1)/args.n_pools
+
+fig, probs, neg_ratio, parameters = activation_model(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
 peptide_probs = cpp.peptide_probabilities(check_results, probs)
 len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs, probs, check_results)
 cognate = list(check_results['Peptide'][check_results['Cognate'] == True])

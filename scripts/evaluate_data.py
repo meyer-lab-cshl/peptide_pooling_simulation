@@ -211,7 +211,7 @@ c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
 normal = max(c, key=c.get)
 neg_share = 1 - (args.iters + normal -1)/args.n_pools
 model, fig, probs, n_c, pp, parameters = activation_model(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
-fmodel, ffig, fprobs, fn_c, fpp, f_parameters = activation_model(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
+fmodel, ffig, fprobs, fn_c, fpp, f_parameters = fixed_model(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
 #peptide_probs = cpp.peptide_probabilities(check_results, probs)
 #len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs, probs, check_results)
 cognate = check_results['Act Pools'][check_results['Cognate'] == True].iloc[0]
@@ -224,7 +224,7 @@ tn = []
 fp = []
 fn = []
 
-for i in inds:
+for i in set(inds):
     if i in cognate and i in act_pools_model:
         tp.append(i)
     elif i not in cognate and i not in act_pools_model:
@@ -239,7 +239,7 @@ f_tn = []
 f_fp = []
 f_fn = []
 
-for i in inds:
+for i in set(inds):
     if i in cognate and i in f_act_pools_model:
         f_tp.append(i)
     elif i not in cognate and i not in f_act_pools_model:

@@ -5,6 +5,56 @@ import argparse
 from collections import Counter
 import pymc as pm
 
+def simulation(mu_off, sigma_off, mu_n, sigma_n, r, sigma_p_r, sigma_n_r, n_pools, p_shape,
+               pl_shape, low_offset, cores=1):
+
+    n_shape = n_pools-p_shape-pl_shape
+    with pm.Model() as simulation:
+        # offset
+        offset = pm.TruncatedNormal("offset", mu=mu_off, sigma=sigma_off, lower=0, upper=100)
+    
+        # Negative
+        n = pm.TruncatedNormal('n', mu=mu_n, sigma=sigma_n, lower=0, upper=100)
+        # Positive
+        p = pm.Deterministic("p", n + offset)
+        # Low positive
+        p_low = pm.Deterministic("p_low", p*low_offset)
+
+        # Negative pools
+        n_pools = pm.TruncatedNormal('n_pools', mu=n, sigma=sigma_n, lower=0, upper=100, shape = n_shape)
+        inds_n = list(range(n_shape))*r
+        n_shape_r = n_shape*r
+
+        # Positive pools
+        p_pools = pm.TruncatedNormal('p_pools', mu=p, sigma=sigma_off, lower=0, upper=100, shape = p_shape)
+        inds_p = list(range(p_shape))*r
+        p_shape_r = p_shape*r
+
+        # Low positive pools
+        pl_pools = pm.TruncatedNormal('pl_pools', mu=p_low, sigma=sigma_off, lower=0, upper=100, shape = pl_shape)
+        inds_pl = list(range(pl_shape))*r
+        pl_shape_r = pl_shape*r
+
+        # With replicas
+        p_pools_r = pm.TruncatedNormal('p_pools_r', mu=p_pools[inds_p], sigma=sigma_p_r, lower=0, upper=100, shape=p_shape_r)
+        pl_pools_r = pm.TruncatedNormal('pl_pools_r', mu=pl_pools[inds_pl], sigma=sigma_p_r, lower=0, upper=100, shape=pl_shape_r)
+        n_pools_r = pm.TruncatedNormal('n_pools_r', mu=n_pools[inds_n], sigma=sigma_n_r, lower=0, upper=100, shape=n_shape_r)
+
+        # negative control
+        n_control = pm.TruncatedNormal('n_control', mu=n, sigma=sigma_n, lower=0, upper=100, shape=r)
+
+        trace = pm.sample(draws=1, cores = cores)
+        
+    p_results = trace.posterior.p_pools_r.mean(dim="chain").values.tolist()[0]
+    pl_results = trace.posterior.pl_pools_r.mean(dim="chain").values.tolist()[0]
+    n_results = trace.posterior.n_pools_r.mean(dim="chain").values.tolist()[0]
+    n_control = trace.posterior.n_control.mean(dim="chain").values.tolist()[0]
+
+    n_mean = float(trace.posterior.n.mean())
+    p_mean = float(trace.posterior.p.mean())
+
+    return p_results, pl_results, n_results, n_control, [p_mean, n_mean]
+
 parser = argparse.ArgumentParser(description='Data Simulation')
 parser.add_argument('-check_results', type=str)
 parser.add_argument('-output', type=str)

@@ -19,8 +19,8 @@ def activation_model(obs, n_pools, inds, neg_control = None, neg_share = None, c
     if neg_share is None:
         neg_share = 0.5
     if np.min(neg_control) > np.max(obs):
-        neg_control = neg_control/np.max(neg_control)
         obs = obs/np.max(neg_control)
+        neg_control = neg_control/np.max(neg_control)
     else:
         neg_control = neg_control/np.max(obs)
         obs = obs/np.max(obs)

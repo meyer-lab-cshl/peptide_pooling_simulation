@@ -18,7 +18,7 @@ low_offset = [0.2, 0.6, 0.8]
 mu_n = [0, 10]
 sigma_n = [1, 3]
 r = [1, 2, 3]
-error = [0, 1]
+error = [0]
 
 setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters', 'n_proteins', 'error'])
 for er in error:

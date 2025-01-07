@@ -1,0 +1,36 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+collect               1
+evaluate_data         2
+pooling_scheme        2
+sim_data              2
+total                 8
+
+Select jobs to execute...
+
+[Wed Dec 11 20:25:13 2024]
+rule pooling_scheme:
+    output: results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv
+    jobid: 5
+    reason: Code has changed since last execution
+    wildcards: n_pools=10, iters=5, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+Terminating processes on user request, this might take some time.
+[Wed Dec 11 20:25:17 2024]
+Error in rule pooling_scheme:
+    jobid: 5
+    output: results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv
+    shell:
+        
+		python scripts/pooling.py 			-output results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv 			-n_pools 10 			-iters 5 			-len_lst 100 			-overlap 4 			-ep_length 8 			-pep_length 14 			-n_proteins 1
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Complete log: .snakemake/log/2024-12-11T202502.613182.snakemake.log

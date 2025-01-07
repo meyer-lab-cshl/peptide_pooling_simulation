@@ -16,7 +16,8 @@ def simulation(mu_off, sigma_off, mu_n, sigma_n, r, sigma_p_r, sigma_n_r, n_pool
         # Negative
         n = pm.TruncatedNormal('n', mu=mu_n, sigma=sigma_n, lower=0, upper=100)
         # Positive
-        p = pm.Deterministic("p", n + offset)
+        raw_p = n + offset
+        p = pm.Deterministic("p", pm.math.clip(raw_p, 0, 100))
         # Low positive
         p_low = pm.Deterministic("p_low", p*low_offset)
 

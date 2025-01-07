@@ -4,21 +4,21 @@ import copepodTCR as cpp
 import codepub as cdp
 from math import comb
 
-n_pools = [10, 15]
-len_lst = [100, 1000]
-overlap = [4, 6]
-ep_length = [8, 14]
-pep_length = [14, 18]
-n_proteins = [1, 10]
-mu_off = [0, 20, 50]
-sigma_off = [1, 3]
-sigma_p_r = [1, 3]
-sigma_n_r = [1, 3]
-low_offset = [0.2, 0.6, 0.8]
-mu_n = [0, 10]
-sigma_n = [1, 3]
-r = [1, 2, 3]
-error = [0, 1]
+n_pools = [10]
+len_lst = [100]
+overlap = [4]
+ep_length = [8]
+pep_length = [14]
+n_proteins = [1]
+mu_off = [50]
+sigma_off = [3]
+sigma_p_r = [3]
+sigma_n_r = [3]
+low_offset = [0.8]
+mu_n = [0]
+sigma_n = [1]
+r = [1]
+error = [0]
 
 setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters', 'n_proteins', 'error'])
 for er in error:

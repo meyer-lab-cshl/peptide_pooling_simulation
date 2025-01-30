@@ -486,6 +486,8 @@ results_row['low_offset'] = args.low_offset
 results_row['r'] = args.r
 results_row['error'] = args.error
 
+results_row['# true act'] = len(cognate)
+
 results_row['# act 1'] = len(act_pools_model1)
 results_row['# act 2'] = len(act_pools_model2)
 results_row['# act 3'] = len(act_pools_model3)

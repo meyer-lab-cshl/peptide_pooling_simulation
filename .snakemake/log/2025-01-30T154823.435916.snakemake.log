@@ -1,0 +1,41 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job               count
+--------------  -------
+all                   1
+collect               1
+evaluate_data    145152
+pooling_scheme       82
+sim_data         145152
+total            290388
+
+Select jobs to execute...
+
+[Thu Jan 30 15:51:42 2025]
+rule sim_data:
+    input: results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv
+    output: results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff0_sigmaoff3_mun0_sigman1_r3_sigmapr3_sigmanr3_lowoffset0.2_error1.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff0_sigmaoff3_mun0_sigman1_r3_sigmapr3_sigmanr3_lowoffset0.2_error1.tsv
+    jobid: 155960
+    reason: Missing output files: results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff0_sigmaoff3_mun0_sigman1_r3_sigmapr3_sigmanr3_lowoffset0.2_error1.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff0_sigmaoff3_mun0_sigman1_r3_sigmapr3_sigmanr3_lowoffset0.2_error1.tsv
+    wildcards: n_pools=10, iters=5, len_lst=100, pep_length=14, overlap=4, ep_length=8, n_proteins=1, mu_off=0, sigma_off=3, mu_n=0, sigma_n=1, r=3, sigma_p_r=3, sigma_n_r=3, low_offset=0.2, error=1
+    resources: tmpdir=/var/folders/bb/6j1bt4dj4x15t9jtm7vlh6gh0000gp/T
+
+[Thu Jan 30 15:51:45 2025]
+Error in rule sim_data:
+    jobid: 155960
+    input: results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv
+    output: results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff0_sigmaoff3_mun0_sigman1_r3_sigmapr3_sigmanr3_lowoffset0.2_error1.tsv, results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff0_sigmaoff3_mun0_sigman1_r3_sigmapr3_sigmanr3_lowoffset0.2_error1.tsv
+    shell:
+        
+		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_10_5_100_14_4_8_1_0_3_0_1_3_3_3_0.2_1"
+		python scripts/sim_data.py 			-check_results results/pooling_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1.tsv 			-output results/simulation_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff0_sigmaoff3_mun0_sigman1_r3_sigmapr3_sigmanr3_lowoffset0.2_error1.tsv 			-output_params results/simparams_N10_I5_len100_peptide14_overlap4_ep_length8_nproteins1_muoff0_sigmaoff3_mun0_sigman1_r3_sigmapr3_sigmanr3_lowoffset0.2_error1.tsv 			-mu_off 0 			-sigma_off 3 			-mu_n 0 			-sigma_n 1 			-r 3 			-n_pools 10 			-sigma_p_r 3 			-sigma_n_r 3 			-low_offset 0.2 			-error 1
+		rm -rf "/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_10_5_100_14_4_8_1_0_3_0_1_3_3_3_0.2_1"
+		
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-01-30T154823.435916.snakemake.log

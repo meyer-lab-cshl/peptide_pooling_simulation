@@ -2,4 +2,5 @@ peplength_eplength_overlap_correspondence.tsv
 npools_iters_lenlst_nproteins_correspondence.tsv
 results/*
 cluster_logs/*
+.snakemake/*
 !results/.gitkeep

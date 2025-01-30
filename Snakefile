@@ -4,21 +4,21 @@ import copepodTCR as cpp
 import codepub as cdp
 from math import comb
 
-n_pools = [10]
-len_lst = [100]
-overlap = [4]
-ep_length = [8]
-pep_length = [14]
-n_proteins = [1]
-mu_off = [50]
-sigma_off = [3]
-sigma_p_r = [3]
-sigma_n_r = [3]
-low_offset = [0.8]
-mu_n = [0]
-sigma_n = [1]
-r = [1]
-error = [0]
+n_pools = [10, 15]
+len_lst = [100, 1000]
+overlap = [4, 6]
+ep_length = [8, 14]
+pep_length = [14, 18]
+n_proteins = [1, 10]
+mu_off = [0, 20, 50]
+sigma_off = [1, 3]
+sigma_p_r = [1, 3]
+sigma_n_r = [1, 3]
+low_offset = [0.2, 0.6, 0.8]
+mu_n = [0, 10]
+sigma_n = [1, 3]
+r = [1, 2, 3]
+error = [0, 1]
 
 setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters', 'n_proteins', 'error'])
 for er in error:
@@ -87,7 +87,7 @@ rule sim_data:
 		ident_sim = lambda wildcards : "_".join(wildcards)
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=$HOME/.pytensor/compiledir_sim_{params.ident_sim}"
+		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
 		python scripts/sim_data.py \
 			-check_results {input} \
 			-output {output.output_data} \
@@ -102,7 +102,7 @@ rule sim_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf "$HOME/.pytensor/compiledir_sim_{params.ident_sim}"
+		rm -rf "/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
 		"""
 
 # Results interpetation
@@ -117,7 +117,7 @@ rule evaluate_data:
 		ident_ev = lambda wildcards : "_".join(wildcards)
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=$HOME/.pytensor/compiledir_ev_{params.ident_ev}"
+		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
 		python scripts/evaluate_data.py \
 			-scheme {input.scheme} \
 			-data {input.data} \
@@ -139,7 +139,7 @@ rule evaluate_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf "$HOME/.pytensor/compiledir_ev_{params.ident_ev}"
+		rm -rf "/grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
 		"""
 
 rule collect:

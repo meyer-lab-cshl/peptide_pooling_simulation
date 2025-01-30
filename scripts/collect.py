@@ -9,12 +9,18 @@ try:
 except FileNotFoundError:
 	cols = ['n_pools', 'iters', 'len_lst', 'pep_length', 'shift', 'ep_length', 'n_proteins', 'mu_off',
 	'sigma_off', 'mu_n', 'sigma_n', 'sigma_p_r',
-	'sigma_n_r', 'low_offset',
-	'r', 'error', '# act',
-	'true_pools', 'model1_pools', 'model2_pools',
+	'sigma_n_r', 'low_offset', 'r', 'error',
+	'# act 1', '# act 2', '# act 3', '# act 4',
+	'true_pools',
+	'model1_pools', 'model2_pools', 'model3_pools', 'model4_pools',
 	'TruePositive_1', 'TrueNegative_1', 'FalsePositive_1', 'FalseNegative_1',
 	'TruePositive_2', 'TrueNegative_2', 'FalsePositive_2', 'FalseNegative_2',
-	'negative_model1', 'positive_model1', 'negative_model2', 'positive_model2',
+	'TruePositive_3', 'TrueNegative_3', 'FalsePositive_3', 'FalseNegative_3',
+	'TruePositive_4', 'TrueNegative_4', 'FalsePositive_4', 'FalseNegative_4',
+	'negative_model1', 'positive_model1',
+	'negative_model2', 'positive_model2',
+	'negative_model3', 'positive_model3',
+	'negative_model4', 'positive_model4',
 	'neg_control', 'neg_share',
 	'positive_sim', 'negative_sim']
 

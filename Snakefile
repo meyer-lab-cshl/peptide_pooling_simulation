@@ -102,7 +102,7 @@ rule sim_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf "compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
+		rm -rf /grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}
 		"""
 
 # Results interpetation
@@ -139,7 +139,7 @@ rule evaluate_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf "compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
+		rm -rf /grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}
 		"""
 
 rule collect:

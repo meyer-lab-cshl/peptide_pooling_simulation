@@ -6,7 +6,7 @@ import random
 import pymc as pm
 import pytensor
 import pytensor.tensor as pt
-pytensor.config.blas__ldflags = '-framework Accelerate'
+#pytensor.config.blas__ldflags = '-framework Accelerate'
 import arviz as az
 
 import argparse
@@ -395,9 +395,9 @@ c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
 normal = max(c, key=c.get)
 neg_share = 1 - (args.iters + normal -1)/args.n_pools
 model1, fig1, probs1, n_c1, pp1, parameters1 = activation_model1(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
-model2, fig2, probs2, n_c2, pp2, parameters2 = activation_model1(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
-model3, fig3, probs3, n_c3, pp3, parameters3 = activation_model1(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
-model4, fig4, probs4, n_c4, pp4, parameters4 = activation_model1(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
+model2, fig2, probs2, n_c2, pp2, parameters2 = activation_model2(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
+model3, fig3, probs3, n_c3, pp3, parameters3 = activation_model3(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
+model4, fig4, probs4, n_c4, pp4, parameters4 = activation_model4(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
 #peptide_probs = cpp.peptide_probabilities(check_results, probs)
 #len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs, probs, check_results)
 cognate = check_results['Act Pools'][check_results['Cognate'] == True].iloc[0]
@@ -405,67 +405,30 @@ cognate = [int(x) for x in cognate[1:-1].split(', ')]
 act_pools_model1 = list(probs1.index[probs1['assign'] < 0.5])
 act_pools_model2 = list(probs2.index[probs2['assign'] < 0.5])
 act_pools_model3 = list(probs3.index[probs3['assign'] < 0.5])
-act_pools_model4 = list(probs3.index[probs4['assign'] < 0.5])
+act_pools_model4 = list(probs4.index[probs4['assign'] < 0.5])
 
-tp1 = []
-tn1 = []
-fp1 = []
-fn1 = []
+def calculate_tp_tn_fp_fn(cognate, act_pools):
+    tp = []
+    tn = []
+    fp = []
+    fn = []
 
-for i in set(inds):
-    if i in cognate and i in act_pools_model1:
-        tp1.append(i)
-    elif i not in cognate and i not in act_pools_model1:
-        tn1.append(i)
-    elif i not in cognate and i in act_pools_model1:
-        fp1.append(i)
-    elif i in cognate and i not in act_pools_model1:
-        fn1.append(i)
+    for i in set(inds):
+        if i in cognate and i in act_pools:
+            tp.append(i)
+        elif i not in cognate and i not in act_pools:
+            tn.append(i)
+        elif i not in cognate and i in act_pools:
+            fp.append(i)
+        elif i in cognate and i not in act_pools:
+            fn.append(i)
 
-tp2 = []
-tn2 = []
-fp2 = []
-fn2 = []
+    return tp, tn, fp, fn
 
-for i in set(inds):
-    if i in cognate and i in act_pools_model2:
-        tp2.append(i)
-    elif i not in cognate and i not in act_pools_model2:
-        tn2.append(i)
-    elif i not in cognate and i in act_pools_model2:
-        fp2.append(i)
-    elif i in cognate and i not in act_pools_model2:
-        fn2.append(i)
-
-tp3 = []
-tn3 = []
-fp3 = []
-fn3 = []
-
-for i in set(inds):
-    if i in cognate and i in act_pools_model3:
-        tp3.append(i)
-    elif i not in cognate and i not in act_pools_model3:
-        tn3.append(i)
-    elif i not in cognate and i in act_pools_model3:
-        fp3.append(i)
-    elif i in cognate and i not in act_pools_model3:
-        fn3.append(i)
-
-tp4 = []
-tn4 = []
-fp4 = []
-fn4 = []
-
-for i in set(inds):
-    if i in cognate and i in act_pools_model4:
-        tp4.append(i)
-    elif i not in cognate and i not in act_pools_model4:
-        tn4.append(i)
-    elif i not in cognate and i in act_pools_model4:
-        fp4.append(i)
-    elif i in cognate and i not in act_pools_model4:
-        fn4.append(i)
+tp1, tn1, fp1, fn1 = calculate_tp_tn_fp_fn(cognate, act_pools_model1)
+tp2, tn2, fp2, fn2 = calculate_tp_tn_fp_fn(cognate, act_pools_model2)
+tp3, tn3, fp3, fn3 = calculate_tp_tn_fp_fn(cognate, act_pools_model3)
+tp4, tn4, fp4, fn4 = calculate_tp_tn_fp_fn(cognate, act_pools_model4)
 
 
 results_row = dict()

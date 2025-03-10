@@ -150,15 +150,18 @@ cognate = [int(x) for x in cognate[1:-1].split(', ')]
 for i in range(len(error_pools)):
     cognate.remove(error_pools[i])
 
+if args.error == -1:
+    cognate = []
+
 act_pools_model4 = list(probs4.index[probs4['assign'] < 0.5])
 
-def calculate_tp_tn_fp_fn(cognate, act_pools):
+def calculate_tp_tn_fp_fn(cognate, act_pools, n_pools):
     tp = []
     tn = []
     fp = []
     fn = []
 
-    for i in set(inds):
+    for i in range(n_pools):
         if i in cognate and i in act_pools:
             tp.append(i)
         elif i not in cognate and i not in act_pools:
@@ -170,8 +173,7 @@ def calculate_tp_tn_fp_fn(cognate, act_pools):
 
     return tp, tn, fp, fn
 
-tp4, tn4, fp4, fn4 = calculate_tp_tn_fp_fn(cognate, act_pools_model4)
-
+tp4, tn4, fp4, fn4 = calculate_tp_tn_fp_fn(cognate, act_pools_model4, args.n_pools)
 
 results_row = dict()
 results_row['n_pools'] = args.n_pools

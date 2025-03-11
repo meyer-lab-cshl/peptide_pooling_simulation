@@ -13,7 +13,8 @@ except FileNotFoundError:
 	'# true act', 'true_pools',
 	'# act 4', 'model4_pools',
 	'TruePositive_4', 'TrueNegative_4', 'FalsePositive_4', 'FalseNegative_4',
-	'negative_model4', 'negative_sim', 'positive_model4', 'positive_sim',
+	'negative_model4', 'negative_sim', 'negative_sim_norm',
+	'positive_model4', 'positive_sim', 'positive_sim_norm',
 	'neg_control', 'neg_share']
 
 	results = pd.DataFrame(columns = cols)

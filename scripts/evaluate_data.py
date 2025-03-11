@@ -234,8 +234,10 @@ results_row['positive_model4'] = parameters4[0]
 
 results_row['neg_control'] = sim_params['n_control'].iloc[0]/np.max(obs)
 results_row['neg_share'] = neg_share
-results_row['positive_sim'] = float(sim_params['positive_sim'].iloc[0])/np.max(obs)
-results_row['negative_sim'] = float(sim_params['negative_sim'].iloc[0])/np.max(obs)
+results_row['positive_sim_norm'] = float(sim_params['positive_sim'].iloc[0])/np.max(obs)
+results_row['negative_sim_norm'] = float(sim_params['negative_sim'].iloc[0])/np.max(obs)
+esults_row['positive_sim'] = float(sim_params['positive_sim'].iloc[0])
+results_row['negative_sim'] = float(sim_params['negative_sim'].iloc[0])
 
 results_row = pd.DataFrame([results_row])
 

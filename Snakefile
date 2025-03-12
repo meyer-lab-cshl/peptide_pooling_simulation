@@ -87,7 +87,7 @@ rule sim_data:
 		ident_sim = lambda wildcards : "_".join(wildcards)
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
+		export PYTENSOR_FLAGS="compiledir=/grid/wsbs/home_norepl/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
 		python scripts/sim_data.py \
 			-check_results {input} \
 			-output {output.output_data} \
@@ -102,7 +102,7 @@ rule sim_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf /grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}
+		rm -rf /grid/wsbs/home_norepl/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}
 		"""
 
 # Results interpetation
@@ -117,7 +117,7 @@ rule evaluate_data:
 		ident_ev = lambda wildcards : "_".join(wildcards)
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
+		export PYTENSOR_FLAGS="compiledir=/grid/wsbs/home_norepl/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
 		python scripts/evaluate_data.py \
 			-scheme {input.scheme} \
 			-data {input.data} \
@@ -139,7 +139,7 @@ rule evaluate_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf /grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}
+		rm -rf /grid/wsbs/home_norepl/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}
 		"""
 
 rule collect:

@@ -28,7 +28,7 @@ for er in error:
 				it1 = cpp.find_possible_k_values(n1, l1)
 				for item in it1:
 					if l1 <= comb(n1, item)*0.8 and np1 <= l1:
-						if error < item and item < n1*(2/3):
+						if er < item and item < n1*(2/3):
 							row = {'n_pools':n1, 'len_lst':l1, 'iters':item,
 							'n_proteins':np1, 'error':er}
 							row = pd.DataFrame([row])

@@ -78,7 +78,7 @@ lst = list(set(check_results['Peptide']))
 inds_p_check = check_results[check_results['Cognate'] == True]['Act Pools'].values[0]
 inds_p_check = [int(x) for x in inds_p_check[1:-1].split(', ')]
 
-if args.error != 100:
+if args.error != -1:
 
     error_pools = []
 

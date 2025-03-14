@@ -150,7 +150,7 @@ cognate = [int(x) for x in cognate[1:-1].split(', ')]
 for i in range(len(error_pools)):
     cognate.remove(error_pools[i])
 
-if args.error == 100:
+if args.error == -1:
     cognate = []
 
 act_pools_model4 = list(probs4.index[probs4['assign'] < 0.5])
@@ -196,7 +196,7 @@ results_row['error_pools'] = error_pools
 
 results_row['# true act'] = len(cognate)
 results_row['true_pools'] = cognate
-if args.error == 100:
+if args.error == -1:
     results_row['# true act'] = 0
     results_row['true_pools'] = []
 

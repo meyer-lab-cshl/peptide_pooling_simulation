@@ -18,7 +18,7 @@ low_offset = [0.2, 0.8]
 mu_n = [0, 30, 60]
 sigma_n = [3]
 r = [1, 2, 3]
-error = [-1, 0, 1] # when error = -1, it is a negative control (i.e. all values are pooled from negative distribution)
+error = [100, 0, 1] # when error = -1, it is a negative control (i.e. all values are pooled from negative distribution)
 
 setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters', 'n_proteins', 'error'])
 for er in error:
@@ -28,7 +28,7 @@ for er in error:
 				it1 = cpp.find_possible_k_values(n1, l1)
 				for item in it1:
 					if l1 <= comb(n1, item)*0.8 and np1 <= l1:
-						if er < item and item < n1*(2/3):
+						if item < n1*(2/3):
 							row = {'n_pools':n1, 'len_lst':l1, 'iters':item,
 							'n_proteins':np1, 'error':er}
 							row = pd.DataFrame([row])

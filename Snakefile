@@ -4,18 +4,18 @@ import copepodTCR as cpp
 import codepub as cdp
 from math import comb
 
-n_pools = [10, 15, 20]
-len_lst = [90, 100, 500, 1000]
+n_pools = [10, 15]
+len_lst = [100, 1000]
 overlap = [4]
 ep_length = [8]
 pep_length = [14]
 n_proteins = [1]
-mu_off = [0, 30, 60]
+mu_off = [0, 10, 20, 30, 40, 50, 60]
 sigma_off = [3]
-sigma_p_r = [3]
-sigma_n_r = [3]
-low_offset = [0.2, 0.8]
-mu_n = [0, 30, 60]
+sigma_p_r = [1, 3]
+sigma_n_r = [1, 3]
+low_offset = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+mu_n = [0, 10, 20, 30, 40, 50, 60]
 sigma_n = [3]
 r = [1, 2, 3]
 error = [100, 0, 1] # when error = -1, it is a negative control (i.e. all values are pooled from negative distribution)

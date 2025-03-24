@@ -143,8 +143,10 @@ c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
 normal = max(c, key=c.get)
 neg_share = 1 - (args.iters + normal -1)/args.n_pools
 model4, fig4, probs4, n_c4, pp4, parameters4 = activation_model4(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
-#peptide_probs = cpp.peptide_probabilities(check_results, probs)
-#len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs, probs, check_results)
+
+peptide_probs4 = cpp.peptide_probabilities(check_results, probs4)
+len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs4, probs4, check_results)
+
 cognate = check_results['Act Pools'][check_results['Cognate'] == True].iloc[0]
 cognate = [int(x) for x in cognate[1:-1].split(', ')]
 for i in range(len(error_pools)):
@@ -203,32 +205,36 @@ if args.error == 100:
 results_row['# act 4'] = len(act_pools_model4)
 results_row['model4_pools'] = act_pools_model4
 
-#if notification == 'All pools were activated':
-#	results_row['notification'] = 'all activated'
-#elif notification == 'Zero pools were activated':
-#    results_row['notification'] = '0 activated'
-#elif notification == 'No drop-outs were detected':
-#	results_row['notification'] = '0 drop-outs'
-#elif notification == 'Cognate peptide is located at one of the ends of the list':
-#	results_row['notification'] = 'end peptide'
-#elif notification == 'Cognate peptides are not found':
-#	results_row['notification'] = 'not found'
-#elif notification == 'Drop-out was detected':
-#    results_row['notification'] = 'drop-out'
-#elif notification == 'False positive was detected':
-#	results_row['notification'] = 'false positive'
-#elif notification == 'Analysis error':
-#    results_row['notification'] = 'error'
+if notification == 'All pools were activated':
+	results_row['notification'] = 'all activated'
+elif notification == 'Zero pools were activated':
+    results_row['notification'] = '0 activated'
+elif notification == 'No drop-outs were detected':
+	results_row['notification'] = '0 drop-outs'
+elif notification == 'Cognate peptide is located at one of the ends of the list':
+	results_row['notification'] = 'end peptide'
+elif notification == 'Cognate peptides are not found':
+	results_row['notification'] = 'not found'
+elif notification == 'Drop-out was detected':
+    results_row['notification'] = 'drop-out'
+elif notification == 'False positive was detected':
+	results_row['notification'] = 'false positive'
+elif notification == 'Analysis error':
+    results_row['notification'] = 'error'
 
 results_row['TruePositive_4'] = len(tp4)
 results_row['TrueNegative_4'] = len(tn4)
 results_row['FalsePositive_4'] = len(fp4)
 results_row['FalseNegative_4'] = len(fn4)
 
-#results_row['predicted'] = ', '.join(lst1)
-#results_row['possible'] = ', '.join(lst2)
-#results_row['conclusion_cognate'] = set(cognate) == set(lst1)
-#results_row['conclusion_possible'] = all(elem in cognate for elem in lst2)
+results_row['predicted'] = ', '.join(lst1)
+results_row['possible'] = ', '.join(lst2)
+results_row['conclusion_cognate'] = set(cognate) == set(lst1)
+results_row['conclusion_possible'] = all(elem in cognate for elem in lst2)
+
+results_row['pools_indices'] = ', '.join(inds)
+results_row['pools_results'] = ', '.join(obs)
+results_row['pools_var'] = np.var(obs)
 results_row['negative_model4'] = parameters4[1]
 results_row['positive_model4'] = parameters4[0]
 

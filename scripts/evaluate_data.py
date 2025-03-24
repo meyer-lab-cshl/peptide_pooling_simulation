@@ -232,8 +232,8 @@ results_row['possible'] = ', '.join(lst2)
 results_row['conclusion_cognate'] = set(cognate) == set(lst1)
 results_row['conclusion_possible'] = all(elem in cognate for elem in lst2)
 
-results_row['pools_indices'] = ', '.join(inds)
-results_row['pools_results'] = ', '.join(obs)
+results_row['pools_indices'] = ', '.join([str(x) for x in inds])
+results_row['pools_results'] = ', '.join([str(x) for x in obs])
 results_row['pools_var'] = np.var(obs)
 results_row['negative_model4'] = parameters4[1]
 results_row['positive_model4'] = parameters4[0]

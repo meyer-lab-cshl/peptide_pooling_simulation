@@ -10,7 +10,7 @@ except FileNotFoundError:
 	cols = ['n_pools', 'iters', 'len_lst', 'pep_length', 'shift', 'ep_length', 'n_proteins', 'mu_off',
 	'sigma_off', 'mu_n', 'sigma_n', 'sigma_p_r',
 	'sigma_n_r', 'low_offset', 'r', 'error', 'error_pools',
-	'# true act', 'true_pools',
+	'# true act', 'true_pools', 'true_peptides',
 	'# act 4', 'model4_pools', 'predicted', 'possible',
 	'notification', 'conclusion_cognate', 'conclusion_possible',
 	'pools_indices', 'pools_results', 'pools_var',

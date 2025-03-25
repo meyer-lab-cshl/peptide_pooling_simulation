@@ -148,6 +148,7 @@ peptide_probs4 = cpp.peptide_probabilities(check_results, probs4)
 len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs4, probs4, check_results)
 
 cognate = check_results['Act Pools'][check_results['Cognate'] == True].iloc[0]
+cognate_peptides = set(check_results['Peptide'][check_results['Cognate'] == True])
 cognate = [int(x) for x in cognate[1:-1].split(', ')]
 for i in range(len(error_pools)):
     cognate.remove(error_pools[i])
@@ -198,9 +199,11 @@ results_row['error_pools'] = error_pools
 
 results_row['# true act'] = len(cognate)
 results_row['true_pools'] = cognate
+results_row['true_peptides'] = ', '.join(cognate_peptides)
 if args.error == 100:
     results_row['# true act'] = 0
     results_row['true_pools'] = []
+    results_row['true_peptides'] = ''
 
 results_row['# act 4'] = len(act_pools_model4)
 results_row['model4_pools'] = act_pools_model4
@@ -229,8 +232,8 @@ results_row['FalseNegative_4'] = len(fn4)
 
 results_row['predicted'] = ', '.join(lst1)
 results_row['possible'] = ', '.join(lst2)
-results_row['conclusion_cognate'] = set(cognate) == set(lst1)
-results_row['conclusion_possible'] = all(elem in cognate for elem in lst2)
+results_row['conclusion_cognate'] = set(cognate_peptides) == set(lst1)
+results_row['conclusion_possible'] = all(elem in lst2 for elem in cognate_peptides)
 
 results_row['pools_indices'] = ', '.join([str(x) for x in inds])
 results_row['pools_results'] = ', '.join([str(x) for x in obs])

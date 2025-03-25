@@ -24,10 +24,13 @@ except FileNotFoundError:
 		sep = "\t", index = None)
 
 for item in ins:
-	row = pd.read_csv(item, sep = "\t")
-	if len(results) == 0:
-		results = row
-	else:
-		results = pd.concat([row, results])
+	try:
+		row = pd.read_csv(item, sep = "\t")
+		if len(results) == 0:
+			results = row
+		else:
+			results = pd.concat([row, results])
+	except pd.errors.EmptyDataError:
+		print(item)
 
 results.to_csv(output, sep = "\t", index = None)

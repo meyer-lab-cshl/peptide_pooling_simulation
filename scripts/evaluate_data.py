@@ -21,6 +21,8 @@ def activation_model4(obs, n_pools, inds, neg_control = None, neg_share = None, 
     coords = dict(pool=range(n_pools), component=("positive", "negative"))
     if neg_share is None:
         neg_share = 0.5
+    if neg_control is None:
+        neg_control = sorted(obs)[:inds.count(0)]
     if np.min(neg_control) > np.max(obs):
         obs = obs/np.max(neg_control)
         neg_control = neg_control/np.max(neg_control)
@@ -143,9 +145,13 @@ c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
 normal = max(c, key=c.get)
 neg_share = 1 - (args.iters + normal -1)/args.n_pools
 model4, fig4, probs4, n_c4, pp4, parameters4 = activation_model4(obs, args.n_pools, inds, n_control, neg_share, cores = 1)
+model4_n, fig4_n, probs4_n, n_c4_n, pp4_n, parameters4_n = activation_model4(obs = obs, n_pools = args.n_pools, inds = inds, neg_share = neg_share, cores = 1)
 
 peptide_probs4 = cpp.peptide_probabilities(check_results, probs4)
 len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs4, probs4, check_results)
+
+peptide_probs4_n = cpp.peptide_probabilities(check_results, probs4_n)
+len_act_n, notification_n, lst1_n, lst2_n = cpp.results_analysis(peptide_probs4_n, probs4_n, check_results)
 
 cognate = check_results['Act Pools'][check_results['Cognate'] == True].iloc[0]
 cognate_peptides = set(check_results['Peptide'][check_results['Cognate'] == True])
@@ -157,6 +163,7 @@ if args.error == 100:
     cognate = []
 
 act_pools_model4 = list(probs4.index[probs4['assign'] < 0.5])
+act_pools_model4_n = list(probs4_n.index[probs4_n['assign'] < 0.5])
 
 def calculate_tp_tn_fp_fn(cognate, act_pools, n_pools):
     tp = []
@@ -177,6 +184,7 @@ def calculate_tp_tn_fp_fn(cognate, act_pools, n_pools):
     return tp, tn, fp, fn
 
 tp4, tn4, fp4, fn4 = calculate_tp_tn_fp_fn(cognate, act_pools_model4, args.n_pools)
+tp4_n, tn4_n, fp4_n, fn4_n = calculate_tp_tn_fp_fn(cognate, act_pools_model4_n, args.n_pools)
 
 results_row = dict()
 results_row['n_pools'] = args.n_pools
@@ -208,32 +216,28 @@ if args.error == 100:
 results_row['# act 4'] = len(act_pools_model4)
 results_row['model4_pools'] = act_pools_model4
 
-if notification == 'All pools were activated':
-	results_row['notification'] = 'all activated'
-elif notification == 'Zero pools were activated':
-    results_row['notification'] = '0 activated'
-elif notification == 'No drop-outs were detected':
-	results_row['notification'] = '0 drop-outs'
-elif notification == 'Cognate peptide is located at one of the ends of the list':
-	results_row['notification'] = 'end peptide'
-elif notification == 'Cognate peptides are not found':
-	results_row['notification'] = 'not found'
-elif notification == 'Drop-out was detected':
-    results_row['notification'] = 'drop-out'
-elif notification == 'False positive was detected':
-	results_row['notification'] = 'false positive'
-elif notification == 'Analysis error':
-    results_row['notification'] = 'error'
+results_row['# act 4 n'] = len(act_pools_model4_n)
+results_row['model4_pools_n'] = act_pools_model4_n
 
-results_row['TruePositive_4'] = len(tp4)
-results_row['TrueNegative_4'] = len(tn4)
-results_row['FalsePositive_4'] = len(fp4)
-results_row['FalseNegative_4'] = len(fn4)
+results_row['TruePositive_4'] = len(tp4_n)
+results_row['TrueNegative_4'] = len(tn4_n)
+results_row['FalsePositive_4'] = len(fp4_n)
+results_row['FalseNegative_4'] = len(fn4_n)
+
+results_row['TruePositive_4_n'] = len(tp4)
+results_row['TrueNegative_4_n'] = len(tn4)
+results_row['FalsePositive_4_n'] = len(fp4)
+results_row['FalseNegative_4_n'] = len(fn4)
 
 results_row['predicted'] = ', '.join(lst1)
 results_row['possible'] = ', '.join(lst2)
 results_row['conclusion_cognate'] = set(cognate_peptides) == set(lst1)
 results_row['conclusion_possible'] = all(elem in lst2 for elem in cognate_peptides)
+
+results_row['predicted_n'] = ', '.join(lst1_n)
+results_row['possible_n'] = ', '.join(lst2_n)
+results_row['conclusion_cognate_n'] = set(cognate_peptides) == set(lst1_n)
+results_row['conclusion_possible_n'] = all(elem in lst2 for elem in cognate_peptides)
 
 results_row['pools_indices'] = ', '.join([str(x) for x in inds])
 results_row['pools_results'] = ', '.join([str(x) for x in obs])
@@ -241,7 +245,11 @@ results_row['pools_var'] = np.var(obs)
 results_row['negative_model4'] = parameters4[1]
 results_row['positive_model4'] = parameters4[0]
 
+results_row['negative_model4_n'] = parameters4_n[1]
+results_row['positive_model4_n'] = parameters4_n[0]
+
 results_row['neg_control'] = sim_params['n_control'].iloc[0]/np.max(obs)
+results_row['neg_control_n'] = np.mean(sorted(obs)[:inds.count(0)])/np.max(obs)
 results_row['neg_share'] = neg_share
 results_row['positive_sim_norm'] = float(sim_params['positive_sim'].iloc[0])/np.max(obs)
 results_row['negative_sim_norm'] = float(sim_params['negative_sim'].iloc[0])/np.max(obs)

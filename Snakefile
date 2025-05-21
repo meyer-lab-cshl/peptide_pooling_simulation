@@ -4,12 +4,12 @@ import copepodTCR as cpp
 import codepub as cdp
 from math import comb
 
-n_pools = [10, 15, 20]
-len_lst = [90, 100, 500, 1000]
-overlap = [4]
-ep_length = [8]
-pep_length = [14]
-n_proteins = [1]
+n_pools = [10, 12, 14]
+len_lst = [100, 1000]
+overlap = [4, 6]
+ep_length = [8, 14]
+pep_length = [14, 18]
+n_proteins = [1, 100]
 mu_off = [5, 15, 45]
 sigma_off = [3]
 sigma_p_r = [3]
@@ -28,7 +28,7 @@ for er in error:
 				it1 = cpp.find_possible_k_values(n1, l1)
 				for item in it1:
 					if l1 <= comb(n1, item)*0.8 and np1 <= l1:
-						if item < n1*(2/3):
+						if item < n1*(1/2):
 							row = {'n_pools':n1, 'len_lst':l1, 'iters':item,
 							'n_proteins':np1, 'error':er}
 							row = pd.DataFrame([row])

@@ -4,6 +4,8 @@ import copepodTCR as cpp
 import codepub as cdp
 from math import comb
 
+print('Good morning, Vasilisa!')
+
 n_pools = [10, 12, 14]
 len_lst = [100, 1000]
 overlap = [4, 6]

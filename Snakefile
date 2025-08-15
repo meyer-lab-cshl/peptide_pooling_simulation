@@ -18,7 +18,7 @@ low_offset = [0.2, 0.8]
 mu_n = [5, 15, 45]
 sigma_n = [3]
 r = [1, 2, 3]
-error = [100, 0, 1] # when error = -1, it is a negative control (i.e. all values are pooled from negative distribution)
+error = [100, 0, 1] # when error = 100, it is a negative control (i.e. all values are pooled from negative distribution)
 
 setup1 = pd.DataFrame(columns = ['n_pools', 'len_lst', 'iters', 'n_proteins', 'error'])
 for er in error:

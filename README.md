@@ -1,6 +1,6 @@
 # *In silico* combinatorial peptide pooling assays
 
-<img src="./figures/simulation_pipeline.png" alt="Pipeline scheme" width="400">
+<img src="./figures/simulation_pipeline.png" alt="Pipeline scheme" width="600">
 
 Details of the pipeline are described in the methods section of the «Identification of Antigen-Specific T Cell1 Receptors with Combinatorial Peptide Pooling»
 
@@ -17,7 +17,6 @@ This is snakemake pipeline with three steps.
 
 2) Simulation of activation signal.
 
-	![Simulation](./figures/model_simulation.png)
 	<img src="./figures/model_simulation.png" alt="Simulation" width="400">
 
 	- **mu_off**, $mu_{signal}$ for positive distribution
@@ -32,5 +31,4 @@ This is snakemake pipeline with three steps.
 
 3) Activation model.
 
-	![Model](./figures/model_scheme.png)
 	<img src="./figures/model_scheme.png" alt="Model" width="400">

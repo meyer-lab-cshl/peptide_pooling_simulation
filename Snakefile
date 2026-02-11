@@ -33,7 +33,7 @@ for er in error:
 							'n_proteins':np1, 'error':er}
 							row = pd.DataFrame([row])
 							setup1 = pd.concat([setup1, row])
-setup1.to_csv('npools_iters_lenlst_nproteins_correspondence.tsv', sep = '\t', index = None)
+#setup1.to_csv('npools_iters_lenlst_nproteins_correspondence.tsv', sep = '\t', index = None)
 #print('setup1 done')
 
 setup2 = pd.DataFrame(columns = ['overlap', 'ep_length', 'pep_length'])
@@ -45,7 +45,7 @@ for p1 in pep_length:
                 	row = {'pep_length':p1, 'ep_length':ep1, 'overlap':ov1}
                 	row = pd.DataFrame([row])
                 	setup2 = pd.concat([setup2, row])
-setup2.to_csv('peplength_eplength_overlap_correspondence.tsv', sep = '\t', index = None)
+#setup2.to_csv('peplength_eplength_overlap_correspondence.tsv', sep = '\t', index = None)
 #print('setup2 done')
 
 #setup1 = pd.read_csv('npools_iters_lenlst_nproteins_correspondence.tsv', sep = '\t')

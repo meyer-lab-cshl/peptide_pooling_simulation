@@ -58,7 +58,6 @@ for i in range(0, len(sequence), overlap):
     ps = sequence[i:i+pep_length]
     if len(ps) == pep_length:
         lst_all.append(ps)
-lst_all = lst_all + lst_pr[:len_lst//3 + 10]
 lst = lst_all[:len_lst]
 
 ### copepodTCR

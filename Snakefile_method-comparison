@@ -103,7 +103,6 @@ rule sim_data:
 			-mu_n {wildcards.mu_n} \
 			-sigma_n {wildcards.sigma_n} \
 			-r {wildcards.r} \
-			-n_pools {wildcards.n_pools} \
 			-sigma_p_r {wildcards.sigma_p_r} \
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \

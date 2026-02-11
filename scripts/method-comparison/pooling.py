@@ -1,6 +1,6 @@
 import copepodTCR as cpp
 import codepub as cdp
-from math import comb
+import math
 import itertools
 import numpy as np
 import random
@@ -68,7 +68,7 @@ if method == 'copepodTCR':
         if len(possible_r) != 0:
             negshares = []
             for r in possible_r:
-                if comb(m, r)*0.8 >= len_lst and comb(m, r+1)*0.8 >= len_lst:
+                if math.comb(m, r)*0.8 >= len_lst and math.comb(m, r+1)*0.8 >= len_lst:
                     negshare_result = (m - r - 1)/m
                     negshares.append(negshare_result)
             negshare_ind = np.argmax(negshare_result)

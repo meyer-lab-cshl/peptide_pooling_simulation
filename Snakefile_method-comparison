@@ -76,6 +76,8 @@ rule sim_data:
 		output_params = "results/method-comparison/simparams_{method}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
 	params:
 		ident_sim = lambda wildcards : "_".join(wildcards)
+	resources:
+		mem_mb = 1000
 	shell:
 		"""
 		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
@@ -105,6 +107,8 @@ rule evaluate_data:
 		"results/method-comparison/conclusion_{method}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_muoff{mu_off}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}_lowoffset{low_offset}_error{error}.tsv"
 	params:
 		ident_ev = lambda wildcards : "_".join(wildcards)
+	resources:
+		mem_mb = 1000
 	shell:
 		"""
 		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"

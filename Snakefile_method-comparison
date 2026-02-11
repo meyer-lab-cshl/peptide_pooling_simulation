@@ -151,5 +151,5 @@ rule collect:
 	output:
 		"results/method-comparison/summary_results.tsv"
 	script:
-		'scripts//method-comparison/collect.py'
+		'scripts/method-comparison/collect.py'
 

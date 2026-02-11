@@ -135,7 +135,7 @@ else:
     error_pools = []
 check_results = pd.read_csv(scheme, sep = "\t")
 n_pools = check_results['n_pools'].iloc[0]
-iters = check_results['iter'].iloc[0]
+iters = check_results['iters'].iloc[0]
 
 inds = list(cells['Pool'])
 obs = list(cells['Percentage'])

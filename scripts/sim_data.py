@@ -109,7 +109,7 @@ n_shape = args.n_pools - p_shape - pl_shape
 inds_n_check = [item for item in range(args.n_pools) if item not in inds_p_check and item not in inds_pl_check]
 
 p_results, pl_results, n_results, n_control, parameters = simulation(args.mu_off, args.sigma_off, args.mu_n, args.sigma_n, args.r,
-    args.sigma_p_r, args.sigma_n_r, args.n_pools, p_shape, pl_shape, args.low_offset)
+    args.sigma_p_r, args.sigma_n_r, n_pools, p_shape, pl_shape, args.low_offset)
 
 cells = pd.DataFrame({
     'Pool': inds_p_check * args.r + inds_pl_check * args.r + inds_n_check * args.r,

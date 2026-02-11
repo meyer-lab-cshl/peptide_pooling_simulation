@@ -72,7 +72,7 @@ parser.add_argument('-error', type=int)
 args = parser.parse_args()
 
 check_results = pd.read_csv(args.check_results, sep='\t')
-n_pools = check_results['n_pools'].iloc[0]
+n_pools = int(check_results['n_pools'].iloc[0])
 lst = list(set(check_results['Peptide']))
 
 inds_p_check = check_results[check_results['Cognate'] == True]['Act Pools'].values[0]

@@ -67,7 +67,7 @@ if method == 'copepodTCR':
         possible_r = cdp.find_possible_k_values(m, len_lst)
         if len(possible_r) != 0:
             negshares = []
-            negshare_result == -1
+            negshare_result = -1
             for r in possible_r:
                 if math.comb(m, r)*0.8 >= len_lst and math.comb(m, r+1)*0.8 >= len_lst:
                     negshare_result = (m - r - 1)/m

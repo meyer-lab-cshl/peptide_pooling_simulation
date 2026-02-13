@@ -80,7 +80,7 @@ rule sim_data:
 		mem_mb = 1000
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
+		export PYTENSOR_FLAGS="compiledir=/grid/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
 		python scripts/method-comparison/sim_data.py \
 			-check_results {input} \
 			-output {output.output_data} \
@@ -94,7 +94,7 @@ rule sim_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf /grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}
+		rm -rf /grid/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}
 		"""
 
 # Results interpetation
@@ -111,7 +111,7 @@ rule evaluate_data:
 		mem_mb = 1000
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
+		export PYTENSOR_FLAGS="compiledir=/grid/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
 		python scripts/method-comparison/evaluate_data.py \
 			-scheme {input.scheme} \
 			-data {input.data} \
@@ -130,7 +130,7 @@ rule evaluate_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf /grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}
+		rm -rf /grid/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}
 		"""
 
 rule collect:

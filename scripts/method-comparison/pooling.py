@@ -63,16 +63,16 @@ lst = lst_all[:len_lst]
 ### copepodTCR
 if method == 'copepodTCR':
 
-    for m in range(5, 20):
+    for m in range(5, 25):
         possible_r = cdp.find_possible_k_values(m, len_lst)
         if len(possible_r) != 0:
             negshares = []
-            negshare_result = -1
+            negshare_result = 'no'
             for r in possible_r:
                 if math.comb(m, r)*0.8 >= len_lst and math.comb(m, r+1)*0.8 >= len_lst:
                     negshare_result = (m - r - 1)/m
                     negshares.append(negshare_result)
-            if negshare_result != -1:
+            if negshare_result != 'no':
                 negshare_ind = np.argmax(negshare_result)
                 r = possible_r[negshare_ind]
                 break

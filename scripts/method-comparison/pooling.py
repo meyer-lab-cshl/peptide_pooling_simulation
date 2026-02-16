@@ -68,15 +68,17 @@ if method == 'copepodTCR':
         if len(possible_r) != 0:
             negshares = []
             negshare_result = 'no'
+            working_r = []
             for r in possible_r:
                 if math.comb(m, r)*0.8 >= len_lst and math.comb(m, r+1)*0.8 >= len_lst:
                     negshare_result = (m - r - 1)/m
                     negshares.append(negshare_result)
+                    working_r.append(r)
             if negshare_result != 'no':
                 negshare_ind = np.argmax(negshare_result)
-                r = possible_r[negshare_ind]
+                r = working_r[negshare_ind]
                 break
-
+    print(m, r, len_lst)
     b, lines = cdp.bba(m=m, r=r, n=len_lst)
     pools, peptide_address = cpp.pooling(lst=lst, addresses=lines, n_pools=m)
     check_results = cpp.run_experiment(lst=lst, peptide_address=peptide_address,

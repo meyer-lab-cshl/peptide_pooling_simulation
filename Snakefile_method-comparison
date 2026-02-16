@@ -19,6 +19,21 @@ sigma_n = [3]
 r = [1, 2, 3]
 error = [100, 0, 1] # when error = 100, it is a negative control (i.e. all values are pooled from negative distribution)
 
+#method = ['copepodTCR']
+#len_lst = [100, 500, 1500, 2000]
+#overlap = [4]
+#ep_length = [8]
+#pep_length = [18]
+#mu_off = [45]
+#sigma_off = [3]
+#sigma_p_r = [3]
+#sigma_n_r = [3]
+#low_offset = [0.8]
+#mu_n = [5]
+#sigma_n = [3]
+#r = [ 3]
+#error = [0] # when error = 100, it is a negative control (i.e. all values are pooled from negative distribution)
+
 setup1 = pd.DataFrame(columns = ['method', 'len_lst', 'error'])
 for er in error:
 	for m1 in method:
@@ -80,7 +95,7 @@ rule sim_data:
 		mem_mb = 1000
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=/grid/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
+		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}"
 		python scripts/method-comparison/sim_data.py \
 			-check_results {input} \
 			-output {output.output_data} \
@@ -94,7 +109,7 @@ rule sim_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf /grid/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}
+		rm -rf /grid/meyer/home/kovaleva/.pytensor/compiledir_sim_{params.ident_sim}
 		"""
 
 # Results interpetation
@@ -111,7 +126,7 @@ rule evaluate_data:
 		mem_mb = 1000
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=/grid/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
+		export PYTENSOR_FLAGS="compiledir=/grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}"
 		python scripts/method-comparison/evaluate_data.py \
 			-scheme {input.scheme} \
 			-data {input.data} \
@@ -130,7 +145,7 @@ rule evaluate_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf /grid/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}
+		rm -rf /grid/meyer/home/kovaleva/.pytensor/compiledir_ev_{params.ident_ev}
 		"""
 
 rule collect:

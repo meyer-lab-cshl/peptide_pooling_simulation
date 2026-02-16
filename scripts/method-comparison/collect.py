@@ -23,7 +23,7 @@ except FileNotFoundError:
 	'neg_control', 'neg_control_n', 'neg_share']
 
 	results = pd.DataFrame(columns = cols)
-	results.to_csv('results/summary_results.tsv',
+	results.to_csv('results/method-comparison/summary_results.tsv',
 		sep = "\t", index = None)
 
 for item in ins:

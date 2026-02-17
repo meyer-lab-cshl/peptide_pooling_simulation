@@ -49,7 +49,7 @@ for p1 in pep_length:
     for ov1 in overlap:
         if ov1 < p1:
             for ep1 in ep_length:
-                if ep1 < p1:
+                if ep1 <= p1:
                 	row = {'pep_length':p1, 'ep_length':ep1, 'overlap':ov1}
                 	row = pd.DataFrame([row])
                 	setup2 = pd.concat([setup2, row])

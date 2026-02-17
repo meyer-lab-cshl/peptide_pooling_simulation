@@ -29,6 +29,10 @@ except FileNotFoundError:
 for item in ins:
 	try:
 		row = pd.read_csv(item, sep = "\t")
+
+		method_name = item.split('/')[2].split('_')[1]
+		row['method'] = method_name
+
 		if len(results) == 0:
 			results = row
 		else:

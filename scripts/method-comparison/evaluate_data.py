@@ -11,94 +11,6 @@ import arviz as az
 
 import argparse
 
-def activation_model4(obs, n_pools, inds, neg_control = None, neg_share = None, cores=1):
-
-    """
-    Takes a list with observed data (obs), number of pools (n_pools), and indices for the observed data if there were mutiple replicas.
-    Returns model fit and a dataframe with probabilities of each pool being drawn from negative or positive distributions.
-    """
-    
-    coords = dict(pool=range(n_pools), component=("positive", "negative"))
-    if neg_share is None:
-        neg_share = 0.5
-    if neg_control is None:
-        neg_control = sorted(obs)[:inds.count(0)]
-    if np.min(neg_control) > np.max(obs):
-        obs = obs/np.max(neg_control)
-        neg_control = neg_control/np.max(neg_control)
-    else:
-        neg_control = neg_control/np.max(obs)
-        obs = obs/np.max(obs)
-
-    with pm.Model(coords=coords) as model:
-    
-        negative = pm.TruncatedNormal(
-            "negative",
-            mu=0,
-            sigma=1,
-            lower=0.0,
-            upper=1.0,
-        )
-
-        negative_obs = pm.TruncatedNormal(
-            "negative_obs",
-            mu=negative,
-            sigma=0.1,
-            lower=0.0,
-            upper=1.0,
-            observed=neg_control,
-        )
-
-        # Offset such that negative + offset <= 1
-        offset_proportion = pm.Beta("offset_proportion", alpha=5, beta=2)
-        offset = pm.Deterministic("offset", (1 - negative) * offset_proportion)
-        #offset = pm.TruncatedNormal('offset', mu = 0.6, sigma = 0.1, upper = 1, lower = 0)
-
-        #positive = pm.Deterministic("positive", negative + offset, upper = 0, lower = 1)
-        positive = pm.Deterministic("positive", negative + offset)
-    
-        p = pm.Beta("p", alpha=neg_share * 100, beta=(1 - neg_share) * 100)
-        component = pm.Bernoulli("assign", p, dims="pool")
-
-        mu_pool = negative * component + positive * (1 - component)
-    
-        sigma_neg = pm.HalfNormal("sigma_neg", 0.5)
-        #sigma_delta = pm.Exponential("sigma_delta", 0.5)
-        sigma_pos = pm.HalfNormal("sigm_pos", 0.2)
-        sigma_pool = sigma_pos * (1 - component) + sigma_neg * component
-        
-        pool_dist = pm.TruncatedNormal(
-            "pool_dist",
-            mu=mu_pool,
-            sigma = sigma_pool,
-            lower=0.0,
-            upper=1.0,
-            dims="pool",
-        )
-    
-        # Likelihood, where the data indices pick out the relevant pool from pool
-        sigma_data = pm.Exponential("sigma_data", 1.0)
-        pm.TruncatedNormal(
-            "lik", mu=pool_dist[inds], sigma=sigma_data, observed=obs, lower=0.0, upper=1.0
-        )
-
-        idata_alt = pm.sample(cores = cores)
-
-    with model:
-        posterior_predictive = pm.sample_posterior_predictive(idata_alt)
-
-    ax = az.plot_ppc(posterior_predictive, num_pp_samples=100, colors = ['#015396', '#FFA500', '#000000'])
-
-    posterior = az.extract(idata_alt)
-    n_mean = float(posterior["negative"].mean(dim="sample"))
-    p_mean = float(posterior["offset"].mean(dim="sample"))
-
-    posterior_p_mean = posterior["p"].mean(dim="sample").item()
-    print(f"Posterior mean of p: {posterior_p_mean:.3f}")
-
-    #return ax, posterior["assign"].mean(dim="sample").to_dataframe(), neg_control, [p_mean, n_mean]
-    return model, ax, posterior["assign"].mean(dim="sample").to_dataframe(), neg_control, idata_alt, [p_mean, n_mean]
-
 parser = argparse.ArgumentParser(description='Evaluate Data')
 parser.add_argument('-method', type=str)
 parser.add_argument('-scheme', type=str)
@@ -144,18 +56,18 @@ if args.method == 'copepodTCR':
     all_lst = list(set(check_results['Peptide']))
     c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
     normal = max(c, key=c.get)
-    neg_share = 1 - (args.iters + normal -1)/n_pools
+    neg_share = 1 - (iters + normal -1)/n_pools
 else:
     neg_share = (n_pools - iters)/n_pools
 
-model4, fig4, probs4, n_c4, pp4, parameters4 = activation_model4(obs, n_pools, inds, n_control, neg_share, cores = 1)
-model4_n, fig4_n, probs4_n, n_c4_n, pp4_n, parameters4_n = activation_model4(obs = obs, n_pools = n_pools, inds = inds, neg_share = neg_share, cores = 1)
+model, fig, probs, n_c, pp, parameters = cpp.activation_model(obs, n_pools, inds, n_control, neg_share, cores = 1)
+model_n, fig_n, probs_n, n_c_n, pp_n, parameters_n = cpp.activation_model(obs = obs, n_pools = n_pools, inds = inds, neg_share = neg_share, cores = 1)
 
-peptide_probs4 = cpp.peptide_probabilities(check_results, probs4)
-len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs4, probs4, check_results)
+peptide_probs = cpp.peptide_probabilities(check_results, probs)
+len_act, notification, lst1, lst2 = cpp.results_analysis(peptide_probs, probs, check_results)
 
-peptide_probs4_n = cpp.peptide_probabilities(check_results, probs4_n)
-len_act_n, notification_n, lst1_n, lst2_n = cpp.results_analysis(peptide_probs4_n, probs4_n, check_results)
+peptide_probs_n = cpp.peptide_probabilities(check_results, probs_n)
+len_act_n, notification_n, lst1_n, lst2_n = cpp.results_analysis(peptide_probs_n, probs_n, check_results)
 
 cognate = check_results['Act Pools'][check_results['Cognate'] == True].iloc[0]
 cognate_peptides = set(check_results['Peptide'][check_results['Cognate'] == True])
@@ -166,8 +78,8 @@ for i in range(len(error_pools)):
 if args.error == 100:
     cognate = []
 
-act_pools_model4 = list(probs4.index[probs4['assign'] < 0.5])
-act_pools_model4_n = list(probs4_n.index[probs4_n['assign'] < 0.5])
+act_pools_model = list(probs.index[probs['assign'] < 0.5])
+act_pools_model_n = list(probs_n.index[probs_n['assign'] < 0.5])
 
 def calculate_tp_tn_fp_fn(cognate, act_pools, n_pools):
     tp = []
@@ -187,11 +99,14 @@ def calculate_tp_tn_fp_fn(cognate, act_pools, n_pools):
 
     return tp, tn, fp, fn
 
-tp4, tn4, fp4, fn4 = calculate_tp_tn_fp_fn(cognate, act_pools_model4, n_pools)
-tp4_n, tn4_n, fp4_n, fn4_n = calculate_tp_tn_fp_fn(cognate, act_pools_model4_n, n_pools)
+tp, tn, fp, fn = calculate_tp_tn_fp_fn(cognate, act_pools_model, n_pools)
+tp_n, tn_n, fp_n, fn_n = calculate_tp_tn_fp_fn(cognate, act_pools_model_n, n_pools)
 
 results_row = dict()
 results_row['method'] = args.method
+results_row['balance_var'] = check_results['balance_var'].iloc[0]
+results_row['balance_range'] = check_results['balance_range'].iloc[0]
+results_row['balance_iqr'] = check_results['balance_iqr'].iloc[0]
 results_row['n_pools'] = n_pools
 results_row['iters'] = iters
 results_row['len_lst'] = args.len_lst
@@ -217,21 +132,21 @@ if args.error == 100:
     results_row['true_pools'] = []
     results_row['true_peptides'] = ''
 
-results_row['# act 4'] = len(act_pools_model4)
-results_row['model4_pools'] = act_pools_model4
+results_row['# act'] = len(act_pools_model)
+results_row['model_pools'] = act_pools_model
 
-results_row['# act 4 n'] = len(act_pools_model4_n)
-results_row['model4_pools_n'] = act_pools_model4_n
+results_row['# act n'] = len(act_pools_model_n)
+results_row['model_pools_n'] = act_pools_model_n
 
-results_row['TruePositive_4'] = len(tp4_n)
-results_row['TrueNegative_4'] = len(tn4_n)
-results_row['FalsePositive_4'] = len(fp4_n)
-results_row['FalseNegative_4'] = len(fn4_n)
+results_row['TruePositive'] = len(tp_n)
+results_row['TrueNegative'] = len(tn_n)
+results_row['FalsePositive'] = len(fp_n)
+results_row['FalseNegative'] = len(fn_n)
 
-results_row['TruePositive_4_n'] = len(tp4)
-results_row['TrueNegative_4_n'] = len(tn4)
-results_row['FalsePositive_4_n'] = len(fp4)
-results_row['FalseNegative_4_n'] = len(fn4)
+results_row['TruePositive_n'] = len(tp)
+results_row['TrueNegative_n'] = len(tn)
+results_row['FalsePositive_n'] = len(fp)
+results_row['FalseNegative_n'] = len(fn)
 
 results_row['predicted'] = ', '.join(lst1)
 results_row['possible'] = ', '.join(lst2)
@@ -246,11 +161,11 @@ results_row['conclusion_possible_n'] = all(elem in lst2 for elem in cognate_pept
 results_row['pools_indices'] = ', '.join([str(x) for x in inds])
 results_row['pools_results'] = ', '.join([str(x) for x in obs])
 results_row['pools_var'] = np.var(obs)
-results_row['negative_model4'] = parameters4[1]
-results_row['positive_model4'] = parameters4[0]
+results_row['negative_model'] = parameters[1]
+results_row['positive_model'] = parameters[0]
 
-results_row['negative_model4_n'] = parameters4_n[1]
-results_row['positive_model4_n'] = parameters4_n[0]
+results_row['negative_model_n'] = parameters_n[1]
+results_row['positive_model_n'] = parameters_n[0]
 
 results_row['neg_control'] = sim_params['n_control'].iloc[0]/np.max(obs)
 results_row['neg_control_n'] = np.mean(sorted(obs)[:inds.count(0)])/np.max(obs)

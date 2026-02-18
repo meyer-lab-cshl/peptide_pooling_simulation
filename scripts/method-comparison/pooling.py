@@ -63,12 +63,14 @@ lst = lst_all[:len_lst]
 ### copepodTCR
 if method == 'copepodTCR':
 
-    for m in range(5, 25):
+    for m in range(5, 30):
         possible_r = cdp.find_possible_k_values(m, len_lst)
+
         if len(possible_r) != 0:
             negshares = []
             negshare_result = 'no'
             working_r = []
+
             for r in possible_r:
                 if math.comb(m, r)*0.8 >= len_lst and math.comb(m, r+1)*0.8 >= len_lst:
                     negshare_result = (m - r - 1)/m
@@ -78,19 +80,9 @@ if method == 'copepodTCR':
                 negshare_ind = np.argmax(negshare_result)
                 r = working_r[negshare_ind]
                 break
-    print(m, r, len_lst)
-    b, lines = cdp.bba(m=m, r=r, n=len_lst)
-    pools, peptide_address = cpp.pooling(lst=lst, addresses=lines, n_pools=m)
-    check_results = cpp.run_experiment(lst=lst, peptide_address=peptide_address,
-        ep_length=ep_length, pools=pools, iters=r, n_pools=m, regime='without dropouts')
-    cognate = check_results.sample(1)['Epitope'][0]
-    check_results['Cognate'] = False
-    check_results.loc[check_results['Epitope'] == cognate, 'Cognate'] = True
-    check_results['n_pools'] = m
-    check_results['iters'] = r
 
-    check_results.to_csv(output_path,
-    	sep = "\t", index = None)
+    b, lines = cdp.bba(m=m, r=r, n=len_lst)
+
 
 ### basic combinatorial pooling
 elif method == 'basic':
@@ -102,17 +94,6 @@ elif method == 'basic':
             break
 
     b, lines = combinational_pooling(m = m, r = r, n = len_lst)
-    pools, peptide_address = cpp.pooling(lst=lst, addresses=lines, n_pools=m)
-    check_results = cpp.run_experiment(lst=lst, peptide_address=peptide_address,
-        ep_length=ep_length, pools=pools, iters=r, n_pools=m, regime='without dropouts')
-    cognate = check_results.sample(1)['Epitope'][0]
-    check_results['Cognate'] = False
-    check_results.loc[check_results['Epitope'] == cognate, 'Cognate'] = True
-    check_results['n_pools'] = m
-    check_results['iters'] = r
-
-    check_results.to_csv(output_path,
-        sep = "\t", index = None)
 
 ### matrix pooling
 elif method == 'matrix':
@@ -123,14 +104,21 @@ elif method == 'matrix':
     m = n_rows + n_cols
     r = 2
 
-    pools, peptide_address = cpp.pooling(lst=lst, addresses=lines, n_pools=m)
-    check_results = cpp.run_experiment(lst=lst, peptide_address=peptide_address,
-        ep_length=ep_length, pools=pools, iters=r, n_pools=m, regime='without dropouts')
-    cognate = check_results.sample(1)['Epitope'][0]
-    check_results['Cognate'] = False
-    check_results.loc[check_results['Epitope'] == cognate, 'Cognate'] = True
-    check_results['n_pools'] = m
-    check_results['iters'] = r
+b_stat_var = np.var(b)
+b_stat_range= np.max(b) - np.min(b)
+b_stat_iqr = np.percentile(b, 75) - np.percentile(b, 25)
 
-    check_results.to_csv(output_path,
-        sep = "\t", index = None)
+pools, peptide_address = cpp.pooling(lst=lst, addresses=lines, n_pools=m)
+check_results = cpp.run_experiment(lst=lst, peptide_address=peptide_address,
+    ep_length=ep_length, pools=pools, iters=r, n_pools=m, regime='without dropouts')
+cognate = check_results.sample(1)['Epitope'][0]
+check_results['Cognate'] = False
+check_results.loc[check_results['Epitope'] == cognate, 'Cognate'] = True
+check_results['n_pools'] = m
+check_results['iters'] = r
+check_results['balance_var'] = b_stat_var
+check_results['balance_range'] = b_stat_range
+check_results['balance_iqr'] = b_stat_iqr
+
+check_results.to_csv(output_path,
+    sep = "\t", index = None)

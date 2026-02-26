@@ -19,6 +19,7 @@ sigma_n = [5, 10, 15, 20]
 r = [1, 2, 3]
 error = [100, 0, 1] # when error = 100, it is a negative control (i.e. all values are pooled from negative distribution)
 
+
 setup1 = pd.DataFrame(columns = ['method', 'len_lst', 'error'])
 for er in error:
 	for m1 in method:
@@ -77,7 +78,8 @@ rule sim_data:
 	params:
 		ident_sim = lambda wildcards : "_".join(wildcards)
 	resources:
-		mem_mb = 1000
+		mem_mb = 4000,
+		runtime = 60
 	shell:
 		"""
 		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_sim_{params.ident_sim}"
@@ -108,7 +110,8 @@ rule evaluate_data:
 	params:
 		ident_ev = lambda wildcards : "_".join(wildcards)
 	resources:
-		mem_mb = 1000
+		mem_mb = 4000,
+		runtime = 60
 	shell:
 		"""
 		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_ev_{params.ident_ev}"

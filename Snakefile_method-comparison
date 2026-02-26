@@ -82,7 +82,7 @@ rule sim_data:
 		runtime = 60
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_sim_{params.ident_sim}"
+		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_sim_${{SLURM_JOB_ID:-$$}}_{jobid}"
 		python scripts/method-comparison/sim_data.py \
 			-check_results {input} \
 			-output {output.output_data} \
@@ -96,7 +96,7 @@ rule sim_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf ${{TMPDIR:-/tmp}}/pytensor_sim_{params.ident_sim}
+		rm -rf ${{TMPDIR:-/tmp}}/pytensor_sim_${{SLURM_JOB_ID:-$$}}_{jobid}
 		"""
 
 # Results interpetation
@@ -114,7 +114,7 @@ rule evaluate_data:
 		runtime = 60
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_ev_{params.ident_ev}"
+		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_ev_${{SLURM_JOB_ID:-$$}}_{jobid}"
 		python scripts/method-comparison/evaluate_data.py \
 			-method {wildcards.method} \
 			-scheme {input.scheme} \
@@ -134,7 +134,7 @@ rule evaluate_data:
 			-sigma_n_r {wildcards.sigma_n_r} \
 			-low_offset {wildcards.low_offset} \
 			-error {wildcards.error}
-		rm -rf ${{TMPDIR:-/tmp}}/pytensor_ev_{params.ident_ev}
+		rm -rf ${{TMPDIR:-/tmp}}/pytensor_sim_${{SLURM_JOB_ID:-$$}}_{jobid}
 		"""
 
 rule collect:

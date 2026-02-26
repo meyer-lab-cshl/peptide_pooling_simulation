@@ -82,7 +82,8 @@ rule sim_data:
 		runtime = 60
 	shell:
 		"""
-		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_sim_${{SLURM_JOB_ID:-$$}}_{jobid}"
+		export $PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_sim_${{SLURM_JOB_ID:-$$}}_{jobid}"
+		echo PYTENSOR_FLAGS
 		python scripts/method-comparison/sim_data.py \
 			-check_results {input} \
 			-output {output.output_data} \
@@ -115,6 +116,7 @@ rule evaluate_data:
 	shell:
 		"""
 		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_ev_${{SLURM_JOB_ID:-$$}}_{jobid}"
+		echo $PYTENSOR_FLAGS
 		python scripts/method-comparison/evaluate_data.py \
 			-method {wildcards.method} \
 			-scheme {input.scheme} \

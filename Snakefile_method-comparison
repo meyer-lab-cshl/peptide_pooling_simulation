@@ -82,7 +82,7 @@ rule sim_data:
 		runtime = 60
 	shell:
 		"""
-		export $PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_sim_{params.ident_sim}_{jobid}"
+		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/pytensor_sim_{params.ident_sim}_{jobid}"
 		python scripts/method-comparison/sim_data.py \
 			-check_results {input} \
 			-output {output.output_data} \

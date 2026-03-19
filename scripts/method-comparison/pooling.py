@@ -9,6 +9,8 @@ import argparse
 parser = argparse.ArgumentParser(description='pooling')
 
 parser.add_argument('-method', type=str)
+parser.add_argument('-n_pools', type=int)
+parser.add_argument('-iters', type=int)
 parser.add_argument('-len_lst', type=int)
 parser.add_argument('-overlap', type=int)
 parser.add_argument('-ep_length', type=int)
@@ -43,6 +45,8 @@ def combinational_pooling(m, r, n):
     return b, lines
 
 method = str(args.method)
+m = int(args.n_pools)
+r = int(args.iters)
 len_lst = int(args.len_lst)
 overlap = int(args.overlap)
 ep_length = int(args.ep_length)
@@ -63,35 +67,11 @@ lst = lst_all[:len_lst]
 ### copepodTCR
 if method == 'copepodTCR':
 
-    for m in range(5, 30):
-        possible_r = cdp.find_possible_k_values(m, len_lst)
-
-        if len(possible_r) != 0:
-            negshares = []
-            negshare_result = 'no'
-            working_r = []
-
-            for r in possible_r:
-                if math.comb(m, r)*0.8 >= len_lst and math.comb(m, r+1)*0.8 >= len_lst:
-                    negshare_result = (m - r - 1)/m
-                    negshares.append(negshare_result)
-                    working_r.append(r)
-            if negshare_result != 'no':
-                negshare_ind = np.argmax(negshare_result)
-                r = working_r[negshare_ind]
-                break
-
     b, lines = cdp.bba(m=m, r=r, n=len_lst)
 
 
 ### basic combinatorial pooling
 elif method == 'basic':
-
-    for m in range(5, 20):
-        possible_r = cdp.find_possible_k_values(m, len_lst)
-        if len(possible_r) != 0:
-            r = min(possible_r)
-            break
 
     b, lines = combinational_pooling(m = m, r = r, n = len_lst)
 
@@ -111,7 +91,17 @@ b_stat_iqr = np.percentile(b, 75) - np.percentile(b, 25)
 pools, peptide_address = cpp.pooling(lst=lst, addresses=lines, n_pools=m)
 check_results = cpp.run_experiment(lst=lst, peptide_address=peptide_address,
     ep_length=ep_length, pools=pools, iters=r, n_pools=m, regime='without dropouts')
-cognate = check_results.sample(1)['Epitope'][0]
+
+
+for i in range(len(check_results)):
+    ad_pools = check_results['Act Pools'].iloc[i][1:-1].split(', ')
+    pool_sum = 0
+    for adp in ad_pools:
+        pool_sum = pool_sum + len(pools[int(adp)])
+    check_results['pool_sum'] = pool_sum
+
+
+cognate = check_results.loc[check_results['pool_sum'].idxmax()].sample(1)['Epitope'][0]
 check_results['Cognate'] = False
 check_results.loc[check_results['Epitope'] == cognate, 'Cognate'] = True
 check_results['n_pools'] = m

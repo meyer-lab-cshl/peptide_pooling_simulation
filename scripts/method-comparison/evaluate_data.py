@@ -71,6 +71,8 @@ len_act_n, notification_n, lst1_n, lst2_n = cpp.results_analysis(peptide_probs_n
 
 cognate = check_results['Act Pools'][check_results['Cognate'] == True].iloc[0]
 cognate_peptides = set(check_results['Peptide'][check_results['Cognate'] == True])
+pool_sum = check_results['pool_sum'][check_results['Cognate'] == True].iloc[0]
+
 cognate = [int(x) for x in cognate[1:-1].split(', ')]
 for i in range(len(error_pools)):
     cognate.remove(error_pools[i])
@@ -113,6 +115,7 @@ results_row['len_lst'] = args.len_lst
 results_row['pep_length'] = args.pep_length
 results_row['shift'] = args.overlap
 results_row['ep_length'] = args.ep_length
+results_row['pool_sum'] = pool_sum
 results_row['mu_off'] = args.mu_off
 results_row['sigma_off'] = args.sigma_off
 results_row['mu_n'] = args.mu_n

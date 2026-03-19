@@ -8,8 +8,8 @@ try:
 	results = pd.read_csv(output, sep = "\t")
 except FileNotFoundError:
 	cols = ['method', 'balance_var', 'balance_range', 'balance_iqr',
-	'n_pools', 'iters', 'len_lst', 'pep_length', 'shift', 'ep_length', 'mu_off',
-	'sigma_off', 'mu_n', 'sigma_n', 'sigma_p_r',
+	'n_pools', 'iters', 'len_lst', 'pep_length', 'shift', 'ep_length', 'pool_sum',
+	'mu_off', 'sigma_off', 'mu_n', 'sigma_n', 'sigma_p_r',
 	'sigma_n_r', 'low_offset', 'r', 'error', 'error_pools',
 	'# true act', 'true_pools', 'true_peptides',
 	'# act', 'model_pools', 'predicted', 'possible',

@@ -5,8 +5,8 @@ import codepub as cdp
 import math
 
 method = ['copepodTCR', 'basic']
-len_lst = [100, 500, 1000, 1500, 2000]
-wanted_neg_share = [0.4, 0.6, 0.8]
+len_lst = [100, 500, 1000, 1500]
+wanted_neg_share = [0.6, 0.8]
 overlap = [6]
 ep_length = [14]
 pep_length = [14]
@@ -17,7 +17,7 @@ sigma_n_r = [5, 10, 20]
 low_offset = [0.8]
 mu_n = [5, 15, 45]
 sigma_n = [5, 10, 20]
-r = [1, 2, 3]
+r = [2]
 error = [0, 1]
 
 #method = ['copepodTCR', 'basic']

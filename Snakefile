@@ -96,6 +96,9 @@ rule all:
 rule pooling_scheme:
 	output:
 		path = "results/method-comparison/pooling_{method}_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}.tsv"
+	resources:
+		mem_mb = 4000,
+		runtime = 30
 	shell:
 		"""
 		python scripts/method-comparison/pooling.py \

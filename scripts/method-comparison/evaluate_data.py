@@ -141,15 +141,15 @@ results_row['model_pools'] = act_pools_model
 results_row['# act n'] = len(act_pools_model_n)
 results_row['model_pools_n'] = act_pools_model_n
 
-results_row['TruePositive'] = len(tp_n)
-results_row['TrueNegative'] = len(tn_n)
-results_row['FalsePositive'] = len(fp_n)
-results_row['FalseNegative'] = len(fn_n)
+results_row['TruePositive'] = len(tp)
+results_row['TrueNegative'] = len(tn)
+results_row['FalsePositive'] = len(fp)
+results_row['FalseNegative'] = len(fn)
 
-results_row['TruePositive_n'] = len(tp)
-results_row['TrueNegative_n'] = len(tn)
-results_row['FalsePositive_n'] = len(fp)
-results_row['FalseNegative_n'] = len(fn)
+results_row['TruePositive_n'] = len(tp_n)
+results_row['TrueNegative_n'] = len(tn_n)
+results_row['FalsePositive_n'] = len(fp_n)
+results_row['FalseNegative_n'] = len(fn_n)
 
 results_row['predicted'] = ', '.join(lst1)
 results_row['possible'] = ', '.join(lst2)

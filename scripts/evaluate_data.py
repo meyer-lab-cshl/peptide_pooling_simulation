@@ -219,15 +219,15 @@ results_row['model4_pools'] = act_pools_model4
 results_row['# act 4 n'] = len(act_pools_model4_n)
 results_row['model4_pools_n'] = act_pools_model4_n
 
-results_row['TruePositive_4'] = len(tp4_n)
-results_row['TrueNegative_4'] = len(tn4_n)
-results_row['FalsePositive_4'] = len(fp4_n)
-results_row['FalseNegative_4'] = len(fn4_n)
+results_row['TruePositive_4'] = len(tp4)
+results_row['TrueNegative_4'] = len(tn4)
+results_row['FalsePositive_4'] = len(fp4)
+results_row['FalseNegative_4'] = len(fn4)
 
-results_row['TruePositive_4_n'] = len(tp4)
-results_row['TrueNegative_4_n'] = len(tn4)
-results_row['FalsePositive_4_n'] = len(fp4)
-results_row['FalseNegative_4_n'] = len(fn4)
+results_row['TruePositive_4_n'] = len(tp4_n)
+results_row['TrueNegative_4_n'] = len(tn4_n)
+results_row['FalsePositive_4_n'] = len(fp4_n)
+results_row['FalseNegative_4_n'] = len(fn4_n)
 
 results_row['predicted'] = ', '.join(lst1)
 results_row['possible'] = ', '.join(lst2)

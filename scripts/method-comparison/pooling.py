@@ -90,7 +90,7 @@ b_stat_iqr = np.percentile(b, 75) - np.percentile(b, 25)
 
 pools, peptide_address = cpp.pooling(lst=lst, addresses=lines, n_pools=m)
 check_results = cpp.run_experiment(lst=lst, peptide_address=peptide_address,
-    ep_length=ep_length, pools=pools, iters=r, n_pools=m, regime='without dropouts')
+    ep_length=ep_length, pools=pools, iters=r, n_pools=m, regime='without dropouts').reset_index(drop=True)
 
 
 for i in range(len(check_results)):

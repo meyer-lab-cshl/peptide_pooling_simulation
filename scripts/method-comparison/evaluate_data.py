@@ -52,13 +52,11 @@ iters = check_results['iters'].iloc[0]
 inds = list(cells['Pool'])
 obs = list(cells['Percentage'])
 
-if args.method == 'copepodTCR':
-    all_lst = list(set(check_results['Peptide']))
-    c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
-    normal = max(c, key=c.get)
-    neg_share = 1 - (iters + normal -1)/n_pools
-else:
-    neg_share = (n_pools - iters)/n_pools
+
+all_lst = list(set(check_results['Peptide']))
+c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
+normal = max(c, key=c.get)
+neg_share = 1 - (iters + normal -1)/n_pools
 
 model, fig, probs, n_c, pp, parameters = cpp.activation_model(obs, n_pools, inds, n_control, neg_share, cores = 1)
 model_n, fig_n, probs_n, n_c_n, pp_n, parameters_n = cpp.activation_model(obs = obs, n_pools = n_pools, inds = inds, neg_share = neg_share, cores = 1)

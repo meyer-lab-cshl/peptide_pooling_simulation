@@ -1,0 +1,195 @@
+import pandas as pd
+import numpy as np
+import copepodTCR as cpp
+import codepub as cdp
+import math
+
+method = ['copepodTCR', 'basic']
+len_lst = [100, 500, 1000, 1500]
+wanted_neg_share = [0.6]
+overlap = [4, 6]
+ep_length = [8, 14]
+pep_length = [14]
+mu_off_strong = [5, 15]
+mu_off_weak = [5, 15]
+sigma_off = [3]
+sigma_p_r = [3]
+sigma_n_r = [3]
+mu_n = [5, 15]
+sigma_n = [3]
+r = [1, 2]
+
+#method = ['copepodTCR']
+#len_lst = [500]
+#wanted_neg_share = [0.6]
+#overlap = [4]
+#ep_length = [8]
+#pep_length = [14]
+#mu_off_strong = [15]
+#mu_off_weak = [15]
+#sigma_off = [3]
+#sigma_p_r = [3]
+#sigma_n_r = [5]
+#mu_n = [5]
+#sigma_n = [5]
+#r = [2]
+
+
+setup1 = pd.DataFrame(columns = ['method', 'len_lst', 'n_pools', 'iters'])
+for m1 in method:
+	for l1 in len_lst:
+			for wng in wanted_neg_share:
+
+				for m in range(5, 30):
+					possible_r = cdp.find_possible_k_values(m, l1)
+
+					if len(possible_r) != 0:
+						negshares = []
+						working_r = []
+
+						for rs in possible_r:
+							if math.comb(m, rs)*0.8 >= l1 and math.comb(m, rs+1)*0.8 >= l1:
+								negshare_result = (m - rs - 1)/m
+								negshares.append(negshare_result)
+								working_r.append(rs)
+						if len(negshares) > 0:
+							for j in range(len(negshares)):
+								if math.isclose(wng, negshares[j], rel_tol=0.02):
+									rs = working_r[j]
+
+									row = {'method':m1, 'len_lst':l1, 'n_pools':m, 'iters':rs}
+									row = pd.DataFrame([row] )
+									setup1 = pd.concat([setup1, row], ignore_index = True)
+									break
+
+setup1.to_csv('method-lenlst-error_correspondence.tsv', sep = '\t', index = None)
+#print('setup1 done')
+
+setup2 = pd.DataFrame(columns = ['overlap', 'ep_length', 'pep_length'])
+for p1 in pep_length:
+    for ov1 in overlap:
+        if ov1 < p1:
+            for ep1 in ep_length:
+                if ep1 <= p1:
+                	row = {'pep_length':p1, 'ep_length':ep1, 'overlap':ov1}
+                	row = pd.DataFrame([row])
+                	setup2 = pd.concat([setup2, row], ignore_index = True)
+#setup2.to_csv('peplength-eplength-overlap_correspondence.tsv', sep = '\t', index = None)
+#print('setup2 done')
+
+#setup1 = pd.read_csv('method-lenlst-error_correspondence.tsv', sep = '\t')
+#setup2 = pd.read_csv('peplength-eplength-overlap_correspondence.tsv', sep = '\t')
+
+# Rule all
+rule all:
+	input:
+		expand("results/cross-reactivity/conclusion_{setup1.method}_N{setup1.n_pools}_I{setup1.iters}_len{setup1.len_lst}_peptide{setup2.pep_length}_overlap{setup2.overlap}_ep_length{setup2.ep_length}_mustrong{mu_off_strong}_muweak{mu_off_weak}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}.tsv",
+			setup1 = setup1.itertuples(), setup2 = setup2.itertuples(), mu_off_strong=mu_off_strong, mu_off_weak=mu_off_weak, sigma_off=sigma_off, mu_n=mu_n, sigma_n=sigma_n, r=r, sigma_p_r=sigma_p_r, sigma_n_r=sigma_n_r),
+		expand("results/cross-reactivity/summary_results.tsv")
+
+rule select_peptides:
+	output:
+		path = 'results/cross-reactivity/peptides_len{len_lst}_overlap{overlap}_eplength{ep_length}_peplength{pep_length}.tsv'
+	shell:
+		"""
+		python scripts/cross-reactivity/peptide_selection.py \
+			-len_lst {wildcards.len_lst} \
+			-overlap {wildcards.overlap} \
+			-ep_length {wildcards.ep_length} \
+			-pep_length {wildcards.pep_length} \
+			-output {output.path}
+		"""
+
+
+# Pooling
+rule pooling_scheme:
+	input:
+		path = 'results/cross-reactivity/peptides_len{len_lst}_overlap{overlap}_eplength{ep_length}_peplength{pep_length}.tsv'
+	output:
+		path = "results/cross-reactivity/pooling_{method}_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}.tsv"
+	resources:
+		mem_mb = 4000,
+		runtime = 30
+	shell:
+		"""
+		python scripts/cross-reactivity/pooling.py \
+			-peptides_path {input.path} \
+			-method {wildcards.method} \
+			-output {output.path} \
+			-n_pools {wildcards.n_pools} \
+			-iters {wildcards.iters} \
+			-ep_length {wildcards.ep_length} \
+		"""
+
+# Simulation
+rule sim_data:
+	input:
+		"results/cross-reactivity/pooling_{method}_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}.tsv"
+	output:
+		output_data = "results/cross-reactivity/simulation_{method}_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_mustrong{mu_off_strong}_muweak{mu_off_weak}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}.tsv",
+	params:
+		ident_sim = lambda wildcards : "_".join(wildcards)
+	resources:
+		mem_mb = 4000,
+		runtime = 60
+	shell:
+		"""
+		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/cross-reactivity/pytensor_sim_{params.ident_sim}/{jobid}"
+		python scripts/cross-reactivity/sim_data.py \
+			-check_results {input} \
+			-output {output.output_data} \
+			-mu_off_strong {wildcards.mu_off_strong} \
+			-mu_off_weak {wildcards.mu_off_weak} \
+			-sigma_off {wildcards.sigma_off} \
+			-mu_n {wildcards.mu_n} \
+			-sigma_n {wildcards.sigma_n} \
+			-r {wildcards.r} \
+			-sigma_p_r {wildcards.sigma_p_r} \
+			-sigma_n_r {wildcards.sigma_n_r}
+		rm -rf ${{TMPDIR:-/tmp}}/cross-reactivity/pytensor_sim_{params.ident_sim}
+		"""
+
+# Results interpetation
+rule evaluate_data:
+	input:
+		scheme="results/cross-reactivity/pooling_{method}_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}.tsv",
+		data="results/cross-reactivity/simulation_{method}_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_mustrong{mu_off_strong}_muweak{mu_off_weak}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}.tsv",
+	output:
+		"results/cross-reactivity/conclusion_{method}_N{n_pools}_I{iters}_len{len_lst}_peptide{pep_length}_overlap{overlap}_ep_length{ep_length}_mustrong{mu_off_strong}_muweak{mu_off_weak}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}.tsv"
+	params:
+		ident_ev = lambda wildcards : "_".join(wildcards)
+	resources:
+		mem_mb = 4000,
+		runtime = 60
+	shell:
+		"""
+		export PYTENSOR_FLAGS="compiledir=${{TMPDIR:-/tmp}}/cross-reactivity/pytensor_ev_{params.ident_ev}/{jobid}"
+		python scripts/cross-reactivity/evaluate_data.py \
+			-method {wildcards.method} \
+			-scheme {input.scheme} \
+			-data {input.data} \
+			-output {output} \
+			-len_lst {wildcards.len_lst} \
+			-pep_length {wildcards.pep_length} \
+			-overlap {wildcards.overlap} \
+			-ep_length {wildcards.ep_length} \
+			-mu_off_strong {wildcards.mu_off_strong} \
+			-mu_off_weak {wildcards.mu_off_weak} \
+			-sigma_off {wildcards.sigma_off} \
+			-mu_n {wildcards.mu_n} \
+			-sigma_n {wildcards.sigma_n} \
+			-r {wildcards.r} \
+			-sigma_p_r {wildcards.sigma_p_r} \
+			-sigma_n_r {wildcards.sigma_n_r}
+		rm -rf ${{TMPDIR:-/tmp}}/cross-reactivity/pytensor_ev_{params.ident_ev}
+		"""
+
+rule collect:
+	input:
+		expand("results/cross-reactivity/conclusion_{setup1.method}_N{setup1.n_pools}_I{setup1.iters}_len{setup1.len_lst}_peptide{setup2.pep_length}_overlap{setup2.overlap}_ep_length{setup2.ep_length}_mustrong{mu_off_strong}_muweak{mu_off_weak}_sigmaoff{sigma_off}_mun{mu_n}_sigman{sigma_n}_r{r}_sigmapr{sigma_p_r}_sigmanr{sigma_n_r}.tsv",
+			setup1 = setup1.itertuples(), setup2 = setup2.itertuples(), mu_off_strong=mu_off_strong, mu_off_weak=mu_off_weak, sigma_off=sigma_off, mu_n=mu_n, sigma_n=sigma_n, r=r, sigma_p_r=sigma_p_r, sigma_n_r=sigma_n_r)
+	output:
+		"results/cross-reactivity/summary_results.tsv"
+	script:
+		'scripts/cross-reactivity/collect.py'
+

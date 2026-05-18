@@ -16,7 +16,7 @@ sigma_p_r = [3]
 sigma_n_r = [5, 20]
 low_offset = [0.8]
 mu_n = [5, 45]
-sigma_n = [5, 20d]
+sigma_n = [5, 20]
 r = [2]
 error = [0]
 

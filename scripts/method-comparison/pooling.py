@@ -100,11 +100,9 @@ for i in range(len(check_results)):
         pool_sum = pool_sum + len(pools[int(adp)])
     check_results.loc[i, 'pool_sum'] = pool_sum
 
-
-idx = check_results['pool_sum'].idxmax()
-cognate = check_results.loc[idx, 'Epitope']
 check_results['Cognate'] = False
-check_results.loc[check_results['Epitope'] == cognate, 'Cognate'] = True
+cognate = check_results['Epitope'].sample(1).iloc[0]
+check_results['Cognate'][check_results['Epitope'] == cognate] = True
 check_results['n_pools'] = m
 check_results['iters'] = r
 check_results['balance_var'] = b_stat_var

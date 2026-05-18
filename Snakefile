@@ -5,66 +5,42 @@ import codepub as cdp
 import math
 
 method = ['copepodTCR', 'basic']
-len_lst = [100, 500, 1000, 1500]
-wanted_neg_share = [0.6, 0.8]
+len_lst = [500, 1000, 1500]
+n_pools = list(range(10, 21))
 overlap = [4, 6]
 ep_length = [8, 14]
 pep_length = [14]
-mu_off = [5, 15, 45]
+mu_off = [5, 45]
 sigma_off = [3]
 sigma_p_r = [3]
-sigma_n_r = [5, 10, 20]
+sigma_n_r = [5, 20]
 low_offset = [0.8]
-mu_n = [5, 15, 45]
-sigma_n = [5, 10, 20]
+mu_n = [5, 45]
+sigma_n = [5, 20d]
 r = [2]
-error = [0, 1]
+error = [0]
 
-#method = ['copepodTCR', 'basic']
-#len_lst = [500]
-#wanted_neg_share = [0.6]
-#overlap = [6]
-#ep_length = [14]
-#pep_length = [14]
-#mu_off = [45]
-#sigma_off = [3]
-#sigma_p_r = [3]
-#sigma_n_r = [5]
-#low_offset = [0.8]
-#mu_n = [5]
-#sigma_n = [5]
-#r = [1]
-#error = [0]
+setup1 = pd.DataFrame(columns=['method', 'len_lst', 'n_pools', 'iters', 'error', 'neg_share'])
 
-
-
-setup1 = pd.DataFrame(columns = ['method', 'len_lst', 'n_pools', 'iters', 'error'])
 for er in error:
-	for m1 in method:
-		for l1 in len_lst:
-				for wng in wanted_neg_share:
+    for l1 in len_lst:
+        for m in n_pools:
 
-					for m in range(5, 30):
-						possible_r = cdp.find_possible_k_values(m, l1)
+            possible_r = cdp.find_possible_k_values(m, l1)
 
-						if len(possible_r) != 0:
-							negshares = []
-							working_r = []
+            for rs in possible_r:
+                if rs + 1 > m:
+                    continue
 
-							for rs in possible_r:
-								if math.comb(m, rs)*0.8 >= l1 and math.comb(m, rs+1)*0.8 >= l1:
-									negshare_result = (m - rs - 1)/m
-									negshares.append(negshare_result)
-									working_r.append(rs)
-							if len(negshares) > 0:
-								for j in range(len(negshares)):
-									if math.isclose(wng, negshares[j], rel_tol=0.02):
-										rs = working_r[j]
+                if math.comb(m, rs) * 0.85 >= l1 and math.comb(m, rs + 1) * 0.85 >= l1:
+                    negshare_result = (m - rs - 1) / m
 
-										row = {'method':m1, 'len_lst':l1, 'n_pools':m, 'iters':rs, 'error':er}
-										row = pd.DataFrame([row] )
-										setup1 = pd.concat([setup1, row], ignore_index = True)
-										break
+                    if 0.2 <= negshare_result <= 0.9:
+                        rows = pd.DataFrame([
+                            {'method': 'copepodTCR', 'len_lst': l1, 'n_pools': m, 'iters': rs, 'error': er, 'neg_share': negshare_result},
+                            {'method': 'basic', 'len_lst': l1, 'n_pools': m, 'iters': rs, 'error': er, 'neg_share': negshare_result}])
+
+                        setup1 = pd.concat([setup1, rows], ignore_index=True)
 
 setup1.to_csv('method-lenlst-error_correspondence.tsv', sep = '\t', index = None)
 #print('setup1 done')

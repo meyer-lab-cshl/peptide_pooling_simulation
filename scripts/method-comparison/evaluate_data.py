@@ -53,7 +53,7 @@ inds = list(cells['Pool'])
 obs = list(cells['Percentage'])
 
 
-all_lst = list(set(check_results['Peptide']))
+all_lst = list(check_results['Peptide'].unique())
 c, _ = cpp.how_many_peptides(all_lst, args.ep_length)
 normal = max(c, key=c.get)
 neg_share = 1 - (iters + normal -1)/n_pools

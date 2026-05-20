@@ -18,7 +18,7 @@ low_offset = [0.8]
 mu_n = [5, 45]
 sigma_n = [5, 20]
 r = [2]
-error = [0]
+error = [100, 0]
 
 setup1 = pd.DataFrame(columns=['method', 'len_lst', 'n_pools', 'iters', 'error', 'neg_share'])
 

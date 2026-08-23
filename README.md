@@ -2,7 +2,10 @@
 
 <img src="./figures/simulation_pipeline.png" alt="Pipeline scheme" width="600">
 
-Details of the pipeline are described in the methods section of the «Identification of Antigen-Specific T Cell1 Receptors with Combinatorial Peptide Pooling»
+Details of the pipeline are described in the methods section of the «Identification of Antigen-Specific T Cell1 Receptors with Combinatorial Peptide Pooling». This pipeline has three versions:
+1) to test performance of the interpretation framework (*performance*)
+2) to compare performance of different pooling methods using this interpretation framework (*method-comparison*)
+3) to test performance of different pooling methods when two cognate peptides are present in the peptide library (*cross-reactivity*).
 
 This is snakemake pipeline with three steps.
 
@@ -13,7 +16,7 @@ This is snakemake pipeline with three steps.
 	- **overlap**, shift between two overlapping peptides
 	- **ep_length**, epitope length
 	- **pep_length**, peptide length
-	- **n_proteins**, number of proteins from which peptides are generated
+	- **n_proteins**, number of proteins from which peptides are generated [is present only in *performance* scripts]
 
 2) Simulation of activation signal.
 
@@ -23,7 +26,7 @@ This is snakemake pipeline with three steps.
 	- **sigma_off**, $sigma_{signal}$ for positive distribution
 	- **sigma_p_r**, $sigma$ between replicates in positive pools
 	- **sigma_n_r**, $sigma$ between replicates in negative pools
-	- **low_offset**, scaling factor
+	- **low_offset**, scaling factor for positive pools [is present only in *performance* scripts]
 	- **mu_n**, $mu_{neg}$ for negative distribution
 	- **sigma_n**, $mu_{neg}$ for negative distribution
 	- **r**, number of replicates
